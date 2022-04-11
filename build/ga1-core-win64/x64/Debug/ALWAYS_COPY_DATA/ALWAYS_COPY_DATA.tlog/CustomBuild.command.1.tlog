@@ -1,0 +1,20 @@
+^C:\USERS\BKAND\DOCUMENTS\GITHUB\GAMEARCHITECTURE\3DSOUNDSYSTEM\BUILD\GA1-CORE-WIN64\CMAKEFILES\DDBCEE37703A6B0C24181ADB8C68B600\ALWAYS_COPY_DATA.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/src/ga1-core/always_copy_data.h
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\BKAND\DOCUMENTS\GITHUB\GAMEARCHITECTURE\3DSOUNDSYSTEM\SRC\GA1-CORE\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/src/ga1-core -BC:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/build/ga1-core-win64 --check-stamp-file C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/build/ga1-core-win64/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

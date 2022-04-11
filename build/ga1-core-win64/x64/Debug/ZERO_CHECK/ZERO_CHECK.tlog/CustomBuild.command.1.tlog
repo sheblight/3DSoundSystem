@@ -1,0 +1,10 @@
+^C:\USERS\BKAND\DOCUMENTS\GITHUB\GAMEARCHITECTURE\3DSOUNDSYSTEM\BUILD\GA1-CORE-WIN64\CMAKEFILES\DDBCEE37703A6B0C24181ADB8C68B600\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/src/ga1-core -BC:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/build/ga1-core-win64 --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/build/ga1-core-win64/ga1-core.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

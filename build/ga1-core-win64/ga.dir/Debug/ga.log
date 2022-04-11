@@ -1,0 +1,50 @@
+﻿  Building Custom Rule C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/src/ga1-core/CMakeLists.txt
+  ga_component.cpp
+  ga_entity.cpp
+  ga_hello_component.cpp
+  ga_lua_component.cpp
+  ga_camera.cpp
+  ga_input.cpp
+  ga_output.cpp
+  ga_sim.cpp
+  ga_animation_component.cpp
+C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\graphics\ga_animation_component.cpp(76,18): warning C4834: discarding return value of function with 'nodiscard' attribute
+  ga_cube_component.cpp
+  ga_debug_geometry.cpp
+  ga_egg_parser.cpp
+  ga_geometry.cpp
+  ga_material.cpp
+  ga_model_component.cpp
+  ga_program.cpp
+  ga_texture.cpp
+  ga_button.cpp
+  ga_checkbox.cpp
+  ga_font.cpp
+  Generating Code...
+  Compiling...
+  ga_label.cpp
+  ga_widget.cpp
+  ga_condvar.cpp
+  ga_fiber.cpp
+  ga_intpool.cpp
+  ga_job.cpp
+  ga_queue.cpp
+  main.cpp
+  ga_mat3f.cpp
+  ga_mat4f.cpp
+  ga_quatf.cpp
+  ga_vec2f.cpp
+  ga_vec3f.cpp
+  ga_vec4f.cpp
+  ga_intersection.cpp
+  ga_intersection.tests.cpp
+  ga_physics_component.cpp
+  ga_physics_world.cpp
+  ga_playermove_component.cpp
+  ga_rigid_body.cpp
+  Generating Code...
+  Compiling...
+  ga_shape.cpp
+  Generating Code...
+     Creating library C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/build/ga1-core-win64/Debug/ga.lib and object C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/build/ga1-core-win64/Debug/ga.exp
+  ga.vcxproj -> C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\build\ga1-core-win64\Debug\ga.exe
