@@ -86,7 +86,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\build\ga1-core-win64\SDL2-2.0.5\include;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\..\3rdparty\SDL2-2.0.5\include;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\..\3rdparty\stb;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\3rdparty\glew-2.0.0\include;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\..\3rdparty\lua-5.3.3\src;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\3rdparty\SDL2-2.0.20\include;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\..\3rdparty\stb;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\3rdparty\glew-2.0.0\include;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\..\3rdparty\lua-5.3.3\src;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) $(CMAKE_CXX_FLAGS)</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -113,7 +113,8 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <PreBuildEvent>
-      <Message></Message>
+      <Message>
+      </Message>
       <Command>setlocal
 "C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/src/ga1-core/../3rdparty/ttf-bitstream-vera-1.10/VeraMono.ttf C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/build/ga1-core-win64/Debug
 if %errorlevel% neq 0 goto :cmEnd
@@ -125,7 +126,8 @@ exit /b %1
 if %errorlevel% neq 0 goto :VCEnd</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Message>										</Message>
+      <Message>
+      </Message>
       <Command>setlocal
 "C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/src/ga1-core/data/animations/bar_bend.egg C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/build/ga1-core-win64/Debug/data/animations/bar_bend.egg
 if %errorlevel% neq 0 goto :cmEnd
@@ -227,8 +229,8 @@ exit /b %1
 if %errorlevel% neq 0 goto :VCEnd</Command>
     </PostBuildEvent>
     <Link>
-      <AdditionalDependencies>SDL2-2.0.5\Debug\SDL2.lib;glew32s.lib;opengl32.lib;Debug\lua53.lib;user32.lib;gdi32.lib;winmm.lib;imm32.lib;ole32.lib;oleaut32.lib;version.lib;uuid.lib;dinput8.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/src/ga1-core/../3rdparty/glew-2.0.0/lib/Release/x64;C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/src/ga1-core/../3rdparty/glew-2.0.0/lib/Release/x64/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32s.lib;opengl32.lib;Debug\lua53.lib;user32.lib;gdi32.lib;winmm.lib;imm32.lib;ole32.lib;oleaut32.lib;version.lib;uuid.lib;dinput8.lib;kernel32.lib;winspool.lib;shell32.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\3rdparty\SDL2-2.0.20\lib\x64;C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/src/ga1-core/../3rdparty/glew-2.0.0/lib/Release/x64;C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/src/ga1-core/../3rdparty/glew-2.0.0/lib/Release/x64/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64 /ignore:4098 /ignore:4099</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -269,7 +271,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <PreBuildEvent>
-      <Message></Message>
+      <Message>
+      </Message>
       <Command>setlocal
 "C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/src/ga1-core/../3rdparty/ttf-bitstream-vera-1.10/VeraMono.ttf C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/build/ga1-core-win64/Release
 if %errorlevel% neq 0 goto :cmEnd
@@ -281,7 +284,8 @@ exit /b %1
 if %errorlevel% neq 0 goto :VCEnd</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Message>										</Message>
+      <Message>
+      </Message>
       <Command>setlocal
 "C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/src/ga1-core/data/animations/bar_bend.egg C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/build/ga1-core-win64/Release/data/animations/bar_bend.egg
 if %errorlevel% neq 0 goto :cmEnd
@@ -425,7 +429,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <PreBuildEvent>
-      <Message></Message>
+      <Message>
+      </Message>
       <Command>setlocal
 "C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/src/ga1-core/../3rdparty/ttf-bitstream-vera-1.10/VeraMono.ttf C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/build/ga1-core-win64/MinSizeRel
 if %errorlevel% neq 0 goto :cmEnd
@@ -437,7 +442,8 @@ exit /b %1
 if %errorlevel% neq 0 goto :VCEnd</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Message>										</Message>
+      <Message>
+      </Message>
       <Command>setlocal
 "C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/src/ga1-core/data/animations/bar_bend.egg C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/build/ga1-core-win64/MinSizeRel/data/animations/bar_bend.egg
 if %errorlevel% neq 0 goto :cmEnd
@@ -580,7 +586,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <PreBuildEvent>
-      <Message></Message>
+      <Message>
+      </Message>
       <Command>setlocal
 "C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/src/ga1-core/../3rdparty/ttf-bitstream-vera-1.10/VeraMono.ttf C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/build/ga1-core-win64/RelWithDebInfo
 if %errorlevel% neq 0 goto :cmEnd
@@ -592,7 +599,8 @@ exit /b %1
 if %errorlevel% neq 0 goto :VCEnd</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Message>										</Message>
+      <Message>
+      </Message>
       <Command>setlocal
 "C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/src/ga1-core/data/animations/bar_bend.egg C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/build/ga1-core-win64/RelWithDebInfo/data/animations/bar_bend.egg
 if %errorlevel% neq 0 goto :cmEnd
