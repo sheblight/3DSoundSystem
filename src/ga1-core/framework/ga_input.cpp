@@ -27,6 +27,7 @@
 #include <SDL.h>
 #define GLEW_STATIC
 #include <GL/glew.h>
+#include <iostream>
 
 ga_input::ga_input() : _paused(false)
 {
@@ -72,10 +73,36 @@ ga_input::ga_input() : _paused(false)
 	_mouse_x = 0.0f;
 	_mouse_y = 0.0f;
 	_last_time = std::chrono::high_resolution_clock::now();
+
+
+	_renderer = SDL_CreateRenderer(static_cast<SDL_Window*>(_window), -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
+	if (_renderer == NULL)
+	{
+		SDL_Log("Error creating SDL_Renderer!");
+		return;
+	}
+
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+	// Setup Dear ImGui style
+	ImGui::StyleColorsDark();
+	//ImGui::StyleColorsClassic();
+	// 
+	// Setup Platform/Renderer backends
+	ImGui_ImplSDL2_InitForSDLRenderer(static_cast<SDL_Window*>(_window), static_cast<SDL_Renderer*>(_renderer));
+	ImGui_ImplSDLRenderer_Init(static_cast<SDL_Renderer*>(_renderer));
 }
 
 ga_input::~ga_input()
 {
+	ImGui_ImplSDLRenderer_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
+	SDL_DestroyRenderer(static_cast<SDL_Renderer*>(_renderer));
 	SDL_DestroyWindow(static_cast<SDL_Window* >(_window));
 	SDL_Quit();
 }
@@ -243,4 +270,56 @@ bool ga_input::update(ga_frame_params* params)
 	}
 
 	return result;
+}
+
+
+void ga_input::render_gui() {
+	bool done = false; // Needs to be a global or static boolean which breaks the main loop
+	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 0.00f);
+	
+	/*
+	SDL_Event event;
+	while (SDL_PollEvent(&event))
+	{
+		ImGui_ImplSDL2_ProcessEvent(&event);
+		if (event.type == SDL_QUIT)
+			done = true;
+		if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(static_cast<SDL_Window*>(_window)))
+			done = true;
+	}
+	*/
+
+	// Start the Dear ImGui frame
+	ImGui_ImplSDLRenderer_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
+	ImGui::NewFrame();
+
+	// window content
+	static float f = 0.0f;
+	static int counter = 0;
+
+	ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+
+	ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+	//ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+	//ImGui::Checkbox("Another Window", &show_another_window);
+
+	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+	ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+
+	if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+		counter++;
+	ImGui::SameLine();
+	ImGui::Text("counter = %d", counter);
+
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::End();
+
+	// Rendering
+	ImGui::Render();
+	SDL_SetRenderDrawColor(static_cast<SDL_Renderer*>(_renderer), 1, 2, 2, 0);
+	SDL_RenderClear(static_cast<SDL_Renderer*>(_renderer));
+	ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
+	SDL_RenderPresent(static_cast<SDL_Renderer*>(_renderer));
+	std::cout << "Render GUI" << std::endl;
 }

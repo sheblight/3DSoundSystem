@@ -22,9 +22,12 @@ public:
 	ga_input();
 	~ga_input();
 
+	void render_gui();
 	bool update(struct ga_frame_params* params);
+	
 
 	void* get_window() const { return _window; }
+	void* get_renderer() const { return _renderer; }
 
 private:
 	uint64_t _button_mask;
@@ -39,6 +42,7 @@ private:
 	std::chrono::high_resolution_clock::time_point _last_time;
 
 	void* _window;
+	void* _renderer;
 
 	bool _paused;
 };

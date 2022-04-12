@@ -83,6 +83,8 @@ void ga_output::update(ga_frame_params* params)
 
 	// Swap frame buffers:
 	SDL_GL_SwapWindow(static_cast<SDL_Window* >(_window));
+
+	std::cout << "Draw geometry" << std::endl;
 }
 
 void ga_output::draw_dynamic(const std::vector<ga_dynamic_drawcall>& drawcalls, const ga_mat4f& view_proj)

@@ -86,7 +86,9 @@ int main(int argc, const char** argv)
 		sim->late_update(&params);
 
 		// Draw to screen.
+		
 		output->update(&params);
+		input->render_gui();
 	}
 
 	delete output;
