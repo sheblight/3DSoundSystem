@@ -86,7 +86,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\3rdparty\SDL2-2.0.20\include;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\..\3rdparty\stb;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\3rdparty\glew-2.0.0\include;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\..\3rdparty\lua-5.3.3\src;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\3rdparty\imgui-master;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\3rdparty\SDL2-2.0.20\include;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\..\3rdparty\stb;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\3rdparty\glew-2.0.0\include;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\..\3rdparty\lua-5.3.3\src;C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) $(CMAKE_CXX_FLAGS)</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -773,6 +773,13 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\3rdparty\imgui-master\imgui.cpp" />
+    <ClCompile Include="..\..\src\3rdparty\imgui-master\imgui_demo.cpp" />
+    <ClCompile Include="..\..\src\3rdparty\imgui-master\imgui_draw.cpp" />
+    <ClCompile Include="..\..\src\3rdparty\imgui-master\imgui_impl_sdl.cpp" />
+    <ClCompile Include="..\..\src\3rdparty\imgui-master\imgui_impl_sdlrenderer.cpp" />
+    <ClCompile Include="..\..\src\3rdparty\imgui-master\imgui_tables.cpp" />
+    <ClCompile Include="..\..\src\3rdparty\imgui-master\imgui_widgets.cpp" />
     <ClCompile Include="C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\entity\ga_component.cpp" />
     <ClCompile Include="C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\entity\ga_entity.cpp" />
     <ClCompile Include="C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\entity\ga_hello_component.cpp" />
@@ -814,6 +821,14 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\physics\ga_playermove_component.cpp" />
     <ClCompile Include="C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\physics\ga_rigid_body.cpp" />
     <ClCompile Include="C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\physics\ga_shape.cpp" />
+    <ClInclude Include="..\..\src\3rdparty\imgui-master\imconfig.h" />
+    <ClInclude Include="..\..\src\3rdparty\imgui-master\imgui.h" />
+    <ClInclude Include="..\..\src\3rdparty\imgui-master\imgui_impl_sdl.h" />
+    <ClInclude Include="..\..\src\3rdparty\imgui-master\imgui_impl_sdlrenderer.h" />
+    <ClInclude Include="..\..\src\3rdparty\imgui-master\imgui_internal.h" />
+    <ClInclude Include="..\..\src\3rdparty\imgui-master\imstb_rectpack.h" />
+    <ClInclude Include="..\..\src\3rdparty\imgui-master\imstb_textedit.h" />
+    <ClInclude Include="..\..\src\3rdparty\imgui-master\imstb_truetype.h" />
     <ClInclude Include="C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\always_copy_data.h" />
   </ItemGroup>
   <ItemGroup>

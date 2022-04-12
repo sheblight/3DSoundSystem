@@ -19,6 +19,10 @@
 #include <thread>
 #endif
 
+#include "imgui.h"
+#include "imgui_impl_sdl.h"
+#include "imgui_impl_sdlrenderer.h"
+
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 #define GLEW_STATIC
