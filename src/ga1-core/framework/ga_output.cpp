@@ -99,13 +99,8 @@ void ga_output::update(ga_frame_params* params)
 	// Rendering
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	//ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
-	
 	SDL_GL_SwapWindow(static_cast<SDL_Window*>(_window));	// opengl method
-	//SDL_RenderPresent((SDL_Renderer*)_renderer);	// renderer method
 	
-
-	std::cout << "Render GUI" << std::endl;
 }
 
 void ga_output::draw_dynamic(const std::vector<ga_dynamic_drawcall>& drawcalls, const ga_mat4f& view_proj)

@@ -22,6 +22,7 @@
 
 #include "gui/ga_font.h"
 
+
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
@@ -32,8 +33,14 @@
 #include <unistd.h>
 #endif
 
+#include <iostream>
+
+#include <irrKlang.h>
+#pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
+
 ga_font* g_font = nullptr;
 static void set_root_path(const char* exepath);
+int test_sound();
 
 int main(int argc, const char** argv)
 {
@@ -63,6 +70,9 @@ int main(int argc, const char** argv)
 	ga_lua_component lua_move(&lua, "data/scripts/move.lua");
 	ga_cube_component lua_model(&lua, "data/textures/rpi.png");
 	sim->add_entity(&lua);
+
+	// Start
+	test_sound();
 
 	// Main loop:
 	while (true)
@@ -124,4 +134,28 @@ static void set_root_path(const char* exepath)
 	g_root_path[strlen(cwd)] = '/';
 	g_root_path[strlen(cwd) + 1] = '\0';
 #endif
+}
+
+
+
+int test_sound() {
+	std::cout << "testing sound boi" << std::endl;
+	// start the sound engine with default parameters
+	irrklang::ISoundEngine* engine = irrklang::createIrrKlangDevice();
+
+	if (!engine)
+	{
+		printf("Could not startup engine\n");
+		return 0; // error starting up the engine
+	}
+
+	// To play a sound, we only to call play2D(). The second parameter
+	// tells the engine to play it looped.
+
+	// play some sound stream, looped
+	//engine->play2D("../../src/sounds/getout.ogg", true);
+	engine->play2D("../../src/sounds/tick.wav", true);
+	//engine->drop(); // delete engine
+	return 0;
+
 }
