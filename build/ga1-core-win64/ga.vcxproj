@@ -776,6 +776,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="..\..\src\3rdparty\imgui-master\imgui.cpp" />
     <ClCompile Include="..\..\src\3rdparty\imgui-master\imgui_demo.cpp" />
     <ClCompile Include="..\..\src\3rdparty\imgui-master\imgui_draw.cpp" />
+    <ClCompile Include="..\..\src\3rdparty\imgui-master\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\..\src\3rdparty\imgui-master\imgui_impl_sdl.cpp" />
     <ClCompile Include="..\..\src\3rdparty\imgui-master\imgui_impl_sdlrenderer.cpp" />
     <ClCompile Include="..\..\src\3rdparty\imgui-master\imgui_tables.cpp" />
@@ -823,6 +824,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\physics\ga_shape.cpp" />
     <ClInclude Include="..\..\src\3rdparty\imgui-master\imconfig.h" />
     <ClInclude Include="..\..\src\3rdparty\imgui-master\imgui.h" />
+    <ClInclude Include="..\..\src\3rdparty\imgui-master\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\..\src\3rdparty\imgui-master\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="..\..\src\3rdparty\imgui-master\imgui_impl_sdl.h" />
     <ClInclude Include="..\..\src\3rdparty\imgui-master\imgui_impl_sdlrenderer.h" />
     <ClInclude Include="..\..\src\3rdparty\imgui-master\imgui_internal.h" />

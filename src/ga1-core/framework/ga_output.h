@@ -21,15 +21,17 @@
 class ga_output
 {
 public:
-	ga_output(void* win);
+	ga_output(void* win, void* renderer);
 	~ga_output();
 
 	void update(struct ga_frame_params* params);
 
 private:
 	void draw_dynamic(const std::vector<ga_dynamic_drawcall>& drawcalls, const ga_mat4f& view_proj);
+	void draw_gui();
 
 	void* _window;
+	void* _renderer;
 
 	class ga_constant_color_material* _default_material;
 };

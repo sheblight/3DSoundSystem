@@ -145,6 +145,9 @@
     <ClCompile Include="..\..\src\3rdparty\imgui-master\imgui_widgets.cpp">
       <Filter>Imgui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\3rdparty\imgui-master\imgui_impl_opengl3.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\always_copy_data.h">
@@ -172,6 +175,12 @@
       <Filter>Imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\3rdparty\imgui-master\imstb_truetype.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rdparty\imgui-master\imgui_impl_opengl3.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rdparty\imgui-master\imgui_impl_opengl3_loader.h">
       <Filter>Imgui</Filter>
     </ClInclude>
   </ItemGroup>

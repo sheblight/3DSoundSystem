@@ -44,7 +44,7 @@ int main(int argc, const char** argv)
 	// Create objects for three phases of the frame: input, sim and output.
 	ga_input* input = new ga_input();
 	ga_sim* sim = new ga_sim();
-	ga_output* output = new ga_output(input->get_window());
+	ga_output* output = new ga_output(input->get_window(), input->get_renderer());
 
 	// Create the default font:
 	g_font = new ga_font("VeraMono.ttf", 16.0f, 512, 512);
@@ -86,9 +86,7 @@ int main(int argc, const char** argv)
 		sim->late_update(&params);
 
 		// Draw to screen.
-		
 		output->update(&params);
-		input->render_gui();
 	}
 
 	delete output;

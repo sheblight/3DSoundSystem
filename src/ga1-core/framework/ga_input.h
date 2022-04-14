@@ -11,6 +11,10 @@
 
 #include <chrono>
 #include <cstdint>
+#include "imgui.h"
+#include "imgui_impl_sdl.h"
+#include "imgui_impl_sdlrenderer.h"
+#include "imgui_internal.h"
 
 /*
 ** Represents the input stage of the frame.
@@ -22,7 +26,6 @@ public:
 	ga_input();
 	~ga_input();
 
-	void render_gui();
 	bool update(struct ga_frame_params* params);
 	
 

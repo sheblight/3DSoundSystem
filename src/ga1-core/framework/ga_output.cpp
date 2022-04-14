@@ -16,6 +16,11 @@
 #include "math/ga_mat4f.h"
 #include "math/ga_quatf.h"
 
+#include "imgui.h"
+#include "imgui_impl_sdl.h"
+//#include "imgui_impl_sdlrenderer.h"
+#include "imgui_impl_opengl3.h"
+
 #include <cassert>
 #include <iostream>
 #include <SDL.h>
@@ -25,7 +30,7 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
-ga_output::ga_output(void* win) : _window(win)
+ga_output::ga_output(void* win, void* renderer) : _window(win), _renderer(renderer)
 {
 	int width, height;
 	SDL_GetWindowSize(static_cast<SDL_Window* >(_window), &width, &height);
@@ -45,15 +50,22 @@ ga_output::~ga_output()
 
 void ga_output::update(ga_frame_params* params)
 {
+	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
 	// Update viewport in case window was resized:
 	int width, height;
+	
 	SDL_GetWindowSize(static_cast<SDL_Window* >(_window), &width, &height);
+	
 	glViewport(0, 0, width, height);
 
 	// Clear viewport:
 	glDepthMask(GL_TRUE);
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	//SDL_SetRenderDrawColor((SDL_Renderer*)_renderer, (Uint8)(clear_color.x * 255), (Uint8)(clear_color.y * 255), (Uint8)(clear_color.z * 255), (Uint8)(clear_color.w * 255));
+	//SDL_RenderClear((SDL_Renderer*)_renderer);
 
 	// Compute projection matrices:
 	ga_mat4f perspective;
@@ -77,14 +89,23 @@ void ga_output::update(ga_frame_params* params)
 	// Draw all dynamic geometry:
 	draw_dynamic(params->_dynamic_drawcalls, view_perspective);
 	draw_dynamic(params->_gui_drawcalls, view_ortho);
+	
 
 	GLenum error = glGetError();
 	assert(error == GL_NONE);
 
-	// Swap frame buffers:
-	SDL_GL_SwapWindow(static_cast<SDL_Window* >(_window));
+	draw_gui();
 
-	std::cout << "Draw geometry" << std::endl;
+	// Rendering
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	//ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
+	
+	SDL_GL_SwapWindow(static_cast<SDL_Window*>(_window));	// opengl method
+	//SDL_RenderPresent((SDL_Renderer*)_renderer);	// renderer method
+	
+
+	std::cout << "Render GUI" << std::endl;
 }
 
 void ga_output::draw_dynamic(const std::vector<ga_dynamic_drawcall>& drawcalls, const ga_mat4f& view_proj)
@@ -141,4 +162,50 @@ void ga_output::draw_dynamic(const std::vector<ga_dynamic_drawcall>& drawcalls, 
 		glDeleteVertexArrays(1, &vao);
 		glBindVertexArray(0);
 	}
+}
+
+void ga_output::draw_gui() {
+	bool done = false; // Needs to be a global or static boolean which breaks the main loop
+	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 0.00f);
+
+	///*
+	SDL_Event event;
+	while (SDL_PollEvent(&event))
+	{
+		ImGui_ImplSDL2_ProcessEvent(&event);
+		if (event.type == SDL_QUIT)
+			done = true;
+		if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(static_cast<SDL_Window*>(_window)))
+			done = true;
+	}
+	//*/
+
+	// Start the Dear ImGui frame
+	ImGui_ImplOpenGL3_NewFrame();		// opengl method
+	//ImGui_ImplSDLRenderer_NewFrame();	// sdl_renderer method
+	ImGui_ImplSDL2_NewFrame();
+	ImGui::NewFrame();
+
+	// window content
+	static float f = 0.0f;
+	static int counter = 0;
+
+	ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+
+	ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+	//ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+	//ImGui::Checkbox("Another Window", &show_another_window);
+
+	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+	ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+
+	if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+		counter++;
+	ImGui::SameLine();
+	ImGui::Text("counter = %d", counter);
+
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::End();
+
+	
 }
