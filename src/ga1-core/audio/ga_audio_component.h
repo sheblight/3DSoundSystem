@@ -30,6 +30,8 @@ private:
 	irrklang::ISoundEngine* _engine;
 	irrklang::ISound* _source;
 
+	struct ga_shape* _shape;
+	ga_mat4f _transform;
 	//class ga_material* _material;
 	//uint32_t _vao;
 	//uint32_t _vbos[4];

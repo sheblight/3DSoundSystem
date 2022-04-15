@@ -90,7 +90,7 @@ ga_input::ga_input() : _paused(false)
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
 	// Setup Dear ImGui style
@@ -223,8 +223,10 @@ bool ga_input::update(ga_frame_params* params)
 			result = false;
 			break;
 		default:
+			//ImGui_ImplSDL2_ProcessEvent(&event);
 			break;
 		}
+		ImGui_ImplSDL2_ProcessEvent(&event);
 	}
 
 	_pressed_mask = _button_mask & ~previous_button_mask;

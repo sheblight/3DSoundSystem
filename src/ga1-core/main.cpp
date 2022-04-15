@@ -116,6 +116,7 @@ int main(int argc, const char** argv)
 	delete camera;
 
 	ga_job::shutdown();
+	engine->drop();
 
 	return 0;
 }

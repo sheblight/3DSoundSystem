@@ -163,7 +163,7 @@ void ga_output::draw_gui() {
 	bool done = false; // Needs to be a global or static boolean which breaks the main loop
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 0.00f);
 
-	///*
+	/*
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
@@ -173,7 +173,7 @@ void ga_output::draw_gui() {
 		if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(static_cast<SDL_Window*>(_window)))
 			done = true;
 	}
-	//*/
+	*/
 
 	// Start the Dear ImGui frame
 	ImGui_ImplOpenGL3_NewFrame();		// opengl method
