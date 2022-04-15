@@ -22,6 +22,8 @@
 
 #include "gui/ga_font.h"
 
+#include "audio/ga_audio_component.h"
+
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -64,15 +66,24 @@ int main(int argc, const char** argv)
 	rotation.make_axis_angle(ga_vec3f::x_vector(), ga_degrees_to_radians(15.0f));
 	camera->rotate(rotation);
 
+	// Create sound engine
+	irrklang::ISoundEngine* engine = irrklang::createIrrKlangDevice();
+	char* sound_file = "../../src/sounds/flowers.wav";
+	if (!engine)
+	{
+		printf("Could not startup engine\n");
+		return 0; // error starting up the engine
+	}
+
 	// Create an entity whose movement is driven by Lua script.
 	ga_entity lua;
 	lua.translate({ 0.0f, 2.0f, 1.0f });
 	ga_lua_component lua_move(&lua, "data/scripts/move.lua");
 	ga_cube_component lua_model(&lua, "data/textures/rpi.png");
+	ga_audio_component lua_audio(&lua, engine, sound_file);
 	sim->add_entity(&lua);
 
 	// Start
-	test_sound();
 
 	// Main loop:
 	while (true)
@@ -139,7 +150,7 @@ static void set_root_path(const char* exepath)
 
 
 int test_sound() {
-	std::cout << "testing sound boi" << std::endl;
+	const char* sound_file = "../../src/sounds/tick.wav";
 	// start the sound engine with default parameters
 	irrklang::ISoundEngine* engine = irrklang::createIrrKlangDevice();
 
@@ -149,12 +160,8 @@ int test_sound() {
 		return 0; // error starting up the engine
 	}
 
-	// To play a sound, we only to call play2D(). The second parameter
-	// tells the engine to play it looped.
-
 	// play some sound stream, looped
-	//engine->play2D("../../src/sounds/getout.ogg", true);
-	engine->play2D("../../src/sounds/tick.wav", true);
+	engine->play2D(sound_file, true);
 	//engine->drop(); // delete engine
 	return 0;
 
