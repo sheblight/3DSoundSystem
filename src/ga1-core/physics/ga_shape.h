@@ -111,7 +111,7 @@ struct ga_aabb final : ga_shape
 */
 struct ga_oobb final : ga_shape
 {
-	ga_vec3f _center;
+	ga_vec3f _center = ga_vec3f::zero_vector();
 	ga_vec3f _half_vectors[3];
 
 	ga_shape_t get_type() const override { return k_shape_oobb; }

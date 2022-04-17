@@ -48,3 +48,5 @@ build/ga1-core-win64/ga.dir/Debug/ga_vec4f.obj
 build/ga1-core-win64/ga.dir/Debug/ga_widget.obj
 build/ga1-core-win64/ga.dir/Debug/main.obj
 build/ga1-core-win64/ga.dir/Debug/vc142.pdb
+*.log
+*.obj

@@ -1,4 +1,2 @@
-﻿  ga_input.cpp
-  ga_output.cpp
-  Generating Code...
+﻿  ga_audio_component.cpp
   ga.vcxproj -> C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\build\ga1-core-win64\Debug\ga.exe

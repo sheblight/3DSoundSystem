@@ -25,9 +25,20 @@ ga_audio_component::ga_audio_component(ga_entity* ent, ISoundEngine* engine, con
 
 	// Set up transform and shape
 	_transform = ent->get_transform();
-	ga_oobb* box = new ga_oobb;
-	_shape = box;
 
+	// If visual is a box
+	/*
+	ga_oobb* box = new ga_oobb;
+	box->_half_vectors[0] = ga_vec3f::x_vector().scale_result(1.5f);
+	box->_half_vectors[1] = ga_vec3f::y_vector().scale_result(1.5f);
+	box->_half_vectors[2] = ga_vec3f::z_vector().scale_result(1.5f);
+	_shape = box;
+	*/
+
+	// If visual is a sphere
+	ga_sphere* sphere = new ga_sphere;
+	sphere->_radius = 1.5f;
+	_shape = sphere;
 }
 
 ga_audio_component::~ga_audio_component()

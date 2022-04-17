@@ -13,6 +13,7 @@
 #include "math/ga_math.h"
 
 #include <vector>
+#include <iostream>
 
 void ga_plane::get_debug_draw(const ga_mat4f& transform, ga_dynamic_drawcall* drawcall)
 {
@@ -90,7 +91,7 @@ void ga_aabb::get_debug_draw(const ga_mat4f& transform, ga_dynamic_drawcall* dra
 	drawcall->_positions.push_back({ _max.x, _min.y, _max.z });
 	drawcall->_positions.push_back({ _max.x, _max.y, _min.z });
 	drawcall->_positions.push_back({ _max.x, _max.y, _max.z });
-
+	
 	uint32_t indices[] =
 	{
 		0, 1,
@@ -135,7 +136,7 @@ void ga_oobb::get_corners(std::vector<ga_vec3f>& corners) const
 	ga_vec3f x_hvec = _half_vectors[0];
 	ga_vec3f y_hvec = _half_vectors[1];
 	ga_vec3f z_hvec = _half_vectors[2];
-
+	
 	corners.push_back(_center - x_hvec - y_hvec - z_hvec);
 	corners.push_back(_center - x_hvec - y_hvec + z_hvec);
 	corners.push_back(_center - x_hvec + y_hvec - z_hvec);
@@ -153,7 +154,7 @@ void ga_oobb::get_debug_draw(const ga_mat4f& transform, ga_dynamic_drawcall* dra
 	drawcall->_positions.push_back(_half_vectors[0]);
 	drawcall->_positions.push_back(_half_vectors[1]);
 	drawcall->_positions.push_back(_half_vectors[2]);
-
+	
 	uint32_t indices[] =
 	{
 		0, 1,
