@@ -226,7 +226,7 @@ void ga_output::draw_gui() {
 	// Object list view
 	static imgui_addons::ImGuiFileBrowser file_dialog;
 	static int selected = 0;
-	float space = 180;
+	float space = 200;
 
 	// file browser
 	static bool dialog_open = false;
@@ -252,25 +252,28 @@ void ga_output::draw_gui() {
 		ImGui::Separator();
 
 		// entity parameters
-		//ImGui::Text("Position");
 		if (ImGui::DragFloat3("Position", (float*)&components[selected]->get_position())) 
 		{
 			components[selected]->update_sound_position();
 		}
-		//ImGui::Text("Color");
-		ImGui::ColorEdit3("Wireframe Color", (float*)&components[selected]->_color);
+		ImGui::ColorEdit3("Color", (float*)&components[selected]->_color);
 
 		// audio parameters
 		ImGui::NewLine();
 		if (ImGui::Button("Play")) 
 		{
-			char* s_file = "../../src/sounds/flowers.wav";
 			components[selected]->play(_soundfile);
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Pause")) {}
+		if (ImGui::Button("Pause")) 
+		{
+			components[selected]->pause();
+		}
 		ImGui::SameLine();
-		if (ImGui::Button("Stop")) {}
+		if (ImGui::Button("Stop")) 
+		{
+			components[selected]->stop();
+		}
 		if (ImGui::Button("Browse File")) 
 		{
 			dialog_open = true;
@@ -278,13 +281,16 @@ void ga_output::draw_gui() {
 		ImGui::SameLine();
 		ImGui::Text(_soundfile_displayname);
 		ImGui::Text("Volume");
-
+		if (ImGui::DragFloat("Min Radius", (float*)&components[selected]->get_min_radius()))
+		{
+			components[selected]->set_min_dist();
+		}
+		if (ImGui::DragFloat("Max Radius", (float*)&components[selected]->get_max_radius()))
+		{
+			components[selected]->set_max_dist();
+		}
 		ImGui::EndChild();
 		if (ImGui::Button("New Sound Source")) {}
-		ImGui::SameLine();
-		if (ImGui::Button("New Group Volume")) {
-			counter++;
-		}
 		ImGui::NewLine();
 		ImGui::EndGroup();
 	}

@@ -4,15 +4,21 @@
 #include "entity/ga_entity.h"
 
 ga_audio_manager::ga_audio_manager() {
+	// Initialize engine
 	_engine = irrklang::createIrrKlangDevice();
 	if (!_engine)
 	{
 		printf("Could not startup engine\n");
 	}
+	irrklang::vec3df position(0, 0, 0);        // position of the listener
+	irrklang::vec3df lookDirection(0, 0, 1); // the direction the listener looks into
+	irrklang::vec3df velPerSecond(0, 0, 0);    // only relevant for doppler effects
+	irrklang::vec3df upVector(0, 1, 0);        // where 'up' is in your 3D scene
+	_engine->setListenerPosition(position, lookDirection, velPerSecond, upVector);
+
+	// Recording setup
 	irrklang::ISoundDeviceList* deviceList = irrklang::createAudioRecorderDeviceList();
-
 	printf("Devices available:\n\n");
-
 	for (int i = 0; i < deviceList->getDeviceCount(); ++i)
 		printf("%d: %s\n", i, deviceList->getDeviceDescription(i));
 

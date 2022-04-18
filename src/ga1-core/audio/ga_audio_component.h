@@ -29,15 +29,19 @@ public:
 	virtual ~ga_audio_component();
 
 	virtual void update(struct ga_frame_params* params) override;
+
 	const ga_vec3f& get_position() const { return get_entity()->get_position(); }
+	const float& get_min_radius() const { return _min_radius; }
+	const float& get_max_radius() const { return _max_radius; }
 
 	bool play(const char* filepath);
 	bool pause();
 	bool stop();
 	
 	void update_sound_position();
+	void set_min_dist();
+	void set_max_dist();
 	bool set_fx(const char* effect, float param);
-
 
 
 	// GUI properties
@@ -51,11 +55,11 @@ private:
 	irrklang::ISound* _source;
 
 	struct ga_shape* _shape;
-	ga_mat4f _transform;
 
 	// GUI properties
 	char* _filepath;
-
+	char* _filename;
 	float _volume;
-	float _radius;
+	float _min_radius;
+	float _max_radius;
 };

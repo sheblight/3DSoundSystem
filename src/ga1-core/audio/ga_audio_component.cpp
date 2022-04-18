@@ -13,10 +13,9 @@ using namespace irrklang;
 ga_audio_component::ga_audio_component(ga_entity* ent, ga_audio_manager* manager) : ga_component(ent) {
 	// Set engine
 	_manager = manager;
+	_source = NULL;
 
-	// Set up transform and shape
-	_transform = ent->get_transform();
-
+	// Set up shape
 	ga_sphere* sphere = new ga_sphere;
 	sphere->_radius = 1.5f;
 	_shape = sphere;
@@ -24,7 +23,8 @@ ga_audio_component::ga_audio_component(ga_entity* ent, ga_audio_manager* manager
 	_name = "aduio sarce";
 	_color = ImVec4(0,1,0,1);
 	//_world_position = ga_vec3f::zero_vector();
-	_radius = 1;
+	_min_radius = 5;
+	_max_radius = 10;
 
 	manager->push_back(this);
 }
@@ -55,35 +55,71 @@ void ga_audio_component::update(ga_frame_params* params)
 
 bool ga_audio_component::play(const char* filepath) 
 {
-	// Set sound source
-	if (!_manager->get_engine()) {
-		std::cout << "Error: Engine is not initialized!" << std::endl;
+	// Check if source can be played
+	if (!_manager->get_engine())
+	{ 
+		std::cout << "Error: Missing engine reference! " << filepath << std::endl;
+		return false; 
 	}
-	std::cout << "Loading " << filepath << std::endl;
-	_source = _manager->get_engine()->play3D(filepath, vec3df(get_position().x, get_position().y, get_position().z), true, false, true);
-	if (!_source) {
-		std::cout << "Error: Couldn't initialize sound source at " << filepath << std::endl;
-		return false;
+
+	// Load file to sound source
+	if (_source == NULL || _source->isFinished()) 
+	{
+		printf("Playing at (%f,%f,%f)\n", get_position().x, get_position().y, get_position().z);
+		_source = _manager->get_engine()->play3D(filepath, vec3df(get_position().x, get_position().y, get_position().z), true, false, true);
+		if (!_source) {
+			std::cout << "Error: Couldn't initialize sound source at " << filepath << std::endl;
+			return false;
+		}
+		_source->setMinDistance(_min_radius);
+		_source->setMaxDistance(_max_radius);
 	}
+	// Unpause if sound exists
+	else 
+	{
+		_source->setIsPaused(false);
+	}
+	
 	return true;
 }
 
 bool ga_audio_component::pause()
 {
-	return false;
+	if (_source == NULL)
+	{
+		return false;
+	}
+	_source->setIsPaused();
+	return true;
 }
 
 bool ga_audio_component::stop()
 {
-	return false;
+	if (_source == NULL) 
+	{
+		return false;
+	}
+	_source->stop();
+	return true;
 }
 
 
 void ga_audio_component::update_sound_position() 
 {
-	if (_source->isFinished()) return;
+	if (_source == NULL) return;
 	_source->setPosition(vec3df(get_position().x, get_position().y, get_position().z));
-	
+}
+
+void ga_audio_component::set_min_dist() 
+{
+	if (_source == NULL) return;
+	_source->setMinDistance(_min_radius);
+}
+
+void ga_audio_component::set_max_dist()
+{
+	if (_source == NULL) return;
+	_source->setMaxDistance(_max_radius);
 }
 
 bool ga_audio_component::set_fx(const char* effect, float param)
