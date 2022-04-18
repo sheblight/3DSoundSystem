@@ -36,4 +36,8 @@ private:
 	ga_audio_manager* _audio_manager;
 
 	class ga_constant_color_material* _default_material;
+
+	// GUI
+	char* _soundfile;
+	char* _soundfile_displayname;
 };

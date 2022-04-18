@@ -27,6 +27,8 @@ void ga_audio_manager::push_back(ga_audio_component* component)
 	_components.push_back(component);
 }
 
+//void ga_audio_manager::make_source(ga_audio_component*)
+
 irrklang::ISoundEngine* ga_audio_manager::get_engine() {
 	return _engine;
 }

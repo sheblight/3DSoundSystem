@@ -42,11 +42,17 @@ ga_output::ga_output(void* win, ga_audio_manager* audio_manager) : _window(win),
 
 	_default_material = new ga_constant_color_material();
 	_default_material->init();
+
+	_soundfile = new char[1024];
+	_soundfile_displayname = new char[1024];
+	strcpy(_soundfile_displayname, "Select a file");
 }
 
 ga_output::~ga_output()
 {
 	delete _default_material;
+	delete _soundfile;
+	delete _soundfile_displayname;
 }
 
 void ga_output::update(ga_frame_params* params)
@@ -217,19 +223,17 @@ void ga_output::draw_gui() {
 		ImGui::EndTable();
 	}
 	*/
-	// Objects view
+	// Object list view
 	static imgui_addons::ImGuiFileBrowser file_dialog;
 	static int selected = 0;
-	float space = 150;
+	float space = 180;
 
 	// file browser
 	static bool dialog_open = false;
-	static char* sound_file = new char[1024];
 	{
 		ImGui::BeginChild("Object List", ImVec2(150, space+50), true);
 		for (int i = 0; i < components.size(); i++)
 		{
-			// FIXME: Good candidate to use ImGuiSelectableFlags_SelectOnNav
 			if (ImGui::Selectable(components[i]->_name, selected == i, ImGuiSelectableFlags_AllowDoubleClick))
 			{
 				selected = i;
@@ -240,16 +244,20 @@ void ga_output::draw_gui() {
 	}
 	ImGui::SameLine();
 
-	// Right
+	// Object details
 	{
 		ImGui::BeginGroup();
 		ImGui::BeginChild("Object View", ImVec2(0, space), false); // Leave room for 1 line below us
-		ImGui::Text("Audio Source: %d", selected);
+		ImGui::Text("Audio Source: %s", components[selected]->_name);
 		ImGui::Separator();
 
 		// entity parameters
-		ImGui::Text("Position");
-		ImGui::Text("Color");
+		//ImGui::Text("Position");
+		if (ImGui::DragFloat3("Position", (float*)&components[selected]->get_position())) 
+		{
+			components[selected]->update_sound_position();
+		}
+		//ImGui::Text("Color");
 		ImGui::ColorEdit3("Wireframe Color", (float*)&components[selected]->_color);
 
 		// audio parameters
@@ -257,7 +265,7 @@ void ga_output::draw_gui() {
 		if (ImGui::Button("Play")) 
 		{
 			char* s_file = "../../src/sounds/flowers.wav";
-			components[selected]->play(sound_file);
+			components[selected]->play(_soundfile);
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Pause")) {}
@@ -267,7 +275,8 @@ void ga_output::draw_gui() {
 		{
 			dialog_open = true;
 		}
-		ImGui::Text(sound_file);
+		ImGui::SameLine();
+		ImGui::Text(_soundfile_displayname);
 		ImGui::Text("Volume");
 
 		ImGui::EndChild();
@@ -291,7 +300,8 @@ void ga_output::draw_gui() {
 	{
 		std::cout << file_dialog.selected_fn << std::endl;      // The name of the selected file or directory in case of Select Directory dialog mode
 		std::cout << file_dialog.selected_path << std::endl;    // The absolute path to the selected file
-		strcpy(sound_file, file_dialog.selected_path.c_str());
+		strcpy(_soundfile, file_dialog.selected_path.c_str());
+		strcpy(_soundfile_displayname, file_dialog.selected_fn.c_str());
 		dialog_open = false;
 	}
 	else 

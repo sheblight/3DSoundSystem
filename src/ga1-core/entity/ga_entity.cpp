@@ -13,6 +13,7 @@
 ga_entity::ga_entity()
 {
 	_transform.make_identity();
+	_world_position = ga_vec3f::zero_vector();
 }
 
 ga_entity::~ga_entity()
@@ -42,7 +43,8 @@ void ga_entity::late_update(ga_frame_params* params)
 
 void ga_entity::translate(const ga_vec3f& translation)
 {
-	_transform.translate(translation);
+	//_transform.translate(translation);
+	_world_position += translation;
 }
 
 void ga_entity::rotate(const ga_quatf& rotation)

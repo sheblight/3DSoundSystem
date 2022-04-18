@@ -181,11 +181,14 @@ void ga_cube_component::update(ga_frame_params* params)
 	axis_angle.make_axis_angle(ga_vec3f::y_vector(), ga_degrees_to_radians(60.0f) * dt);
 	get_entity()->rotate(axis_angle);
 
+	ga_mat4f t = get_entity()->get_transform();
+	t.translate(get_entity()->get_position());
+
 	ga_static_drawcall draw;
 	draw._name = "ga_cube_component";
 	draw._vao = _vao;
 	draw._index_count = _index_count;
-	draw._transform = get_entity()->get_transform();
+	draw._transform = t;
 	draw._draw_mode = GL_TRIANGLES;
 	draw._material = _material;
 

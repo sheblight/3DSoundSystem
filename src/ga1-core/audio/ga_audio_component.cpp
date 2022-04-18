@@ -23,7 +23,7 @@ ga_audio_component::ga_audio_component(ga_entity* ent, ga_audio_manager* manager
 
 	_name = "aduio sarce";
 	_color = ImVec4(0,1,0,1);
-	_world_position = ga_vec3f::zero_vector();
+	//_world_position = ga_vec3f::zero_vector();
 	_radius = 1;
 
 	manager->push_back(this);
@@ -39,9 +39,13 @@ ga_audio_component::~ga_audio_component()
 
 void ga_audio_component::update(ga_frame_params* params)
 {
+	ga_mat4f initial_transform;
+	initial_transform.make_identity();
+	initial_transform.translate(get_position());
+
 	ga_dynamic_drawcall draw;
 	draw._color = ga_vec3f({ _color.x, _color.y, _color.z });
-	_shape->get_debug_draw(_transform, &draw);
+	_shape->get_debug_draw(initial_transform, &draw);
 
 	while (params->_dynamic_drawcall_lock.test_and_set(std::memory_order_acquire)) {}
 	params->_dynamic_drawcalls.push_back(draw);
@@ -56,7 +60,7 @@ bool ga_audio_component::play(const char* filepath)
 		std::cout << "Error: Engine is not initialized!" << std::endl;
 	}
 	std::cout << "Loading " << filepath << std::endl;
-	_source = _manager->get_engine()->play3D(filepath, vec3df(0, 0, 0), true, false, true);
+	_source = _manager->get_engine()->play3D(filepath, vec3df(get_position().x, get_position().y, get_position().z), true, false, true);
 	if (!_source) {
 		std::cout << "Error: Couldn't initialize sound source at " << filepath << std::endl;
 		return false;
@@ -72,6 +76,14 @@ bool ga_audio_component::pause()
 bool ga_audio_component::stop()
 {
 	return false;
+}
+
+
+void ga_audio_component::update_sound_position() 
+{
+	if (_source->isFinished()) return;
+	_source->setPosition(vec3df(get_position().x, get_position().y, get_position().z));
+	
 }
 
 bool ga_audio_component::set_fx(const char* effect, float param)

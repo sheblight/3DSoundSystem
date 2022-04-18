@@ -36,7 +36,10 @@ public:
 	const ga_mat4f& get_transform() const { return _transform; }
 	void set_transform(const ga_mat4f& t) { _transform = t; }
 
+	const ga_vec3f& get_position() const { return _world_position; }
+
 private:
 	std::vector<class ga_component*> _components;
 	ga_mat4f _transform;
+	ga_vec3f _world_position;
 };
