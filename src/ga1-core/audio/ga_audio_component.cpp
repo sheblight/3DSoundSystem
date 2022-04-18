@@ -17,7 +17,7 @@ ga_audio_component::ga_audio_component(ga_entity* ent, ga_audio_manager* manager
 
 	// Set up shape
 	ga_sphere* sphere = new ga_sphere;
-	sphere->_radius = 1.5f;
+	sphere->_radius = 1.0f;
 	_shape = sphere;
 
 	// Set up audio
@@ -28,6 +28,7 @@ ga_audio_component::ga_audio_component(ga_entity* ent, ga_audio_manager* manager
 
 	_name = "aduio sarce";
 	_color = ImVec4(0,1,0,1);
+	_volume = 1;
 	_min_radius = 5;
 	_max_radius = 10;
 
@@ -52,6 +53,8 @@ void ga_audio_component::update(ga_frame_params* params)
 
 	ga_dynamic_drawcall draw;
 	draw._color = ga_vec3f({ _color.x, _color.y, _color.z });
+	ga_sphere* sphere = (ga_sphere*)_shape;
+	sphere->_radius = _min_radius;
 	_shape->get_debug_draw(initial_transform, &draw);
 
 	while (params->_dynamic_drawcall_lock.test_and_set(std::memory_order_acquire)) {}
@@ -74,10 +77,12 @@ bool ga_audio_component::play()
 	{
 		printf("Playing at (%f,%f,%f)\n", get_position().x, get_position().y, get_position().z);
 		_source = _manager->get_engine()->play3D(_filepath, vec3df(get_position().x, get_position().y, get_position().z), true, false, true);
-		if (!_source) {
+		if (!_source) 
+		{
 			std::cout << "Error: Couldn't initialize sound source at " << _filepath << std::endl;
 			return false;
 		}
+		_source->setVolume(_volume);
 		_source->setMinDistance(_min_radius);
 		_source->setMaxDistance(_max_radius);
 	}
@@ -132,6 +137,12 @@ void ga_audio_component::set_max_dist()
 {
 	if (_source == NULL) return;
 	_source->setMaxDistance(_max_radius);
+}
+
+void ga_audio_component::set_volume()
+{
+	if (_source == NULL) return;
+	_source->setVolume(_volume);
 }
 
 bool ga_audio_component::set_fx(const char* effect, float param)

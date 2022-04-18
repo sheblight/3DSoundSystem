@@ -31,6 +31,7 @@ public:
 	virtual void update(struct ga_frame_params* params) override;
 
 	const ga_vec3f& get_position() const { return get_entity()->get_position(); }
+	const float &get_volume() const { return _volume; }
 	const float& get_min_radius() const { return _min_radius; }
 	const float& get_max_radius() const { return _max_radius; }
 
@@ -42,6 +43,7 @@ public:
 	void update_sound_position();
 	void set_min_dist();
 	void set_max_dist();
+	void set_volume();
 	bool set_fx(const char* effect, float param);
 
 
