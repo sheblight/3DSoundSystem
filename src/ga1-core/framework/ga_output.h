@@ -12,6 +12,8 @@
 #include "ga_drawcall.h"
 #include "math/ga_mat4f.h"
 
+#include "audio/ga_audio_manager.h"
+
 #include <vector>
 
 /*
@@ -21,7 +23,7 @@
 class ga_output
 {
 public:
-	ga_output(void* win, void* renderer);
+	ga_output(void* win, ga_audio_manager* audio_manager);
 	~ga_output();
 
 	void update(struct ga_frame_params* params);
@@ -31,7 +33,7 @@ private:
 	void draw_gui();
 
 	void* _window;
-	void* _renderer;
+	ga_audio_manager* _audio_manager;
 
 	class ga_constant_color_material* _default_material;
 };

@@ -60,6 +60,5 @@ void draw_debug_sphere(float radius, const ga_mat4f& transform, ga_dynamic_drawc
 	}
 
 	drawcall->_draw_mode = GL_LINES;
-	drawcall->_color = { 0.0f, 0.0f, 1.0f };
 	drawcall->_transform = transform;
 }

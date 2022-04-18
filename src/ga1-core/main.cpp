@@ -23,6 +23,8 @@
 #include "gui/ga_font.h"
 
 #include "audio/ga_audio_component.h"
+#include "audio/ga_audio_manager.h"
+
 
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -53,7 +55,8 @@ int main(int argc, const char** argv)
 	// Create objects for three phases of the frame: input, sim and output.
 	ga_input* input = new ga_input();
 	ga_sim* sim = new ga_sim();
-	ga_output* output = new ga_output(input->get_window(), input->get_renderer());
+	ga_audio_manager* audio_manager = new ga_audio_manager;
+	ga_output* output = new ga_output(input->get_window(), audio_manager);
 
 	// Create the default font:
 	g_font = new ga_font("VeraMono.ttf", 16.0f, 512, 512);
@@ -66,24 +69,18 @@ int main(int argc, const char** argv)
 	rotation.make_axis_angle(ga_vec3f::x_vector(), ga_degrees_to_radians(15.0f));
 	camera->rotate(rotation);
 
-	// Create sound engine
-	irrklang::ISoundEngine* engine = irrklang::createIrrKlangDevice();
-	char* sound_file = "../../src/sounds/flowers.wav";
-	if (!engine)
-	{
-		printf("Could not startup engine\n");
-		return 0; // error starting up the engine
-	}
+	
 
 	// Create an entity whose movement is driven by Lua script.
 	ga_entity lua;
 	lua.translate({ 0.0f, 2.0f, 1.0f });
 	ga_lua_component lua_move(&lua, "data/scripts/move.lua");
 	ga_cube_component lua_model(&lua, "data/textures/rpi.png");
-	ga_audio_component lua_audio(&lua, engine, sound_file);
+	ga_audio_component lua_audio(&lua, audio_manager);
 	sim->add_entity(&lua);
 
-	// Start
+	// Init audio
+	//lua_audio.play(sound_file);
 
 	// Main loop:
 	while (true)
@@ -114,9 +111,9 @@ int main(int argc, const char** argv)
 	delete sim;
 	delete input;
 	delete camera;
+	delete audio_manager;
 
 	ga_job::shutdown();
-	engine->drop();
 
 	return 0;
 }
