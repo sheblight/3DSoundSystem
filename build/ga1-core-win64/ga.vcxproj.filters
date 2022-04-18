@@ -154,6 +154,9 @@
     <ClCompile Include="..\..\src\ga1-core\audio\ga_audio_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\3rdparty\ImGui-Addons-master\FileBrowser\ImGuiFileBrowser.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\always_copy_data.h">
@@ -194,6 +197,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\ga1-core\audio\ga_audio_manager.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3rdparty\ImGui-Addons-master\FileBrowser\ImGuiFileBrowser.h">
+      <Filter>Imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

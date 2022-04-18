@@ -31,6 +31,7 @@ public:
 	virtual void update(struct ga_frame_params* params) override;
 
 	bool play(const char* filepath);
+	bool pause();
 	bool stop();
 	bool set_fx(const char* effect, float param);
 

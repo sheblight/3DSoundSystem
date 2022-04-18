@@ -9,7 +9,13 @@ ga_audio_manager::ga_audio_manager() {
 	{
 		printf("Could not startup engine\n");
 	}
-	//_ents = std::vector<ga_audio_manager*>();
+	irrklang::ISoundDeviceList* deviceList = irrklang::createAudioRecorderDeviceList();
+
+	printf("Devices available:\n\n");
+
+	for (int i = 0; i < deviceList->getDeviceCount(); ++i)
+		printf("%d: %s\n", i, deviceList->getDeviceDescription(i));
+
 }
 
 ga_audio_manager::~ga_audio_manager() {

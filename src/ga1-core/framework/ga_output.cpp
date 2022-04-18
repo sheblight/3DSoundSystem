@@ -18,10 +18,10 @@
 
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
-//#include "imgui_impl_sdlrenderer.h"
 #include "imgui_impl_opengl3.h"
 
 #include "audio/ga_audio_manager.h"
+#include "ImGuiFileBrowser.h"
 
 #include <cassert>
 #include <iostream>
@@ -217,9 +217,14 @@ void ga_output::draw_gui() {
 		ImGui::EndTable();
 	}
 	*/
-	// Left
+	// Objects view
+	static imgui_addons::ImGuiFileBrowser file_dialog;
 	static int selected = 0;
 	float space = 150;
+
+	// file browser
+	static bool dialog_open = false;
+	static char* sound_file = new char[1024];
 	{
 		ImGui::BeginChild("Object List", ImVec2(150, space+50), true);
 		for (int i = 0; i < components.size(); i++)
@@ -251,13 +256,18 @@ void ga_output::draw_gui() {
 		ImGui::NewLine();
 		if (ImGui::Button("Play")) 
 		{
-			components[selected]->play("../../src/sounds/flowers.wav");
+			char* s_file = "../../src/sounds/flowers.wav";
+			components[selected]->play(sound_file);
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Pause")) {}
 		ImGui::SameLine();
 		if (ImGui::Button("Stop")) {}
-		ImGui::Text("Browse File");
+		if (ImGui::Button("Browse File")) 
+		{
+			dialog_open = true;
+		}
+		ImGui::Text(sound_file);
 		ImGui::Text("Volume");
 
 		ImGui::EndChild();
@@ -270,6 +280,24 @@ void ga_output::draw_gui() {
 		ImGui::EndGroup();
 	}
 	
+	//file dialog part
+	if (dialog_open) 
+	{
+		ImGui::OpenPopup("Open File");
+	}
+	
+
+	if (file_dialog.showFileDialog("Open File", imgui_addons::ImGuiFileBrowser::DialogMode::OPEN, ImVec2(700, 310), ".wav"))
+	{
+		std::cout << file_dialog.selected_fn << std::endl;      // The name of the selected file or directory in case of Select Directory dialog mode
+		std::cout << file_dialog.selected_path << std::endl;    // The absolute path to the selected file
+		strcpy(sound_file, file_dialog.selected_path.c_str());
+		dialog_open = false;
+	}
+	else 
+	{
+		dialog_open = false;
+	}
 
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	ImGui::End();
