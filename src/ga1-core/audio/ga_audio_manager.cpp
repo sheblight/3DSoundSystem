@@ -1,9 +1,10 @@
 #include "ga_audio_manager.h"
 
 #include "ga_audio_component.h"
+#include "framework/ga_sim.h"
 #include "entity/ga_entity.h"
 
-ga_audio_manager::ga_audio_manager() {
+ga_audio_manager::ga_audio_manager(ga_sim* sim) : _sim(sim) {
 	// Initialize engine
 	_engine = irrklang::createIrrKlangDevice();
 	if (!_engine)
@@ -28,9 +29,23 @@ ga_audio_manager::~ga_audio_manager() {
 	_engine->drop();
 }
 
+
+
 void ga_audio_manager::push_back(ga_audio_component* component)
 {
 	_components.push_back(component);
+}
+
+
+bool ga_audio_manager::make_source()
+{
+	ga_entity* lua = new ga_entity;
+	lua->translate({ 1.0f, -2.0f, 0.0f });
+	//ga_lua_component lua_move(&lua, "data/scripts/move.lua");
+	//ga_cube_component lua_model(&lua, "data/textures/rpi.png");
+	ga_audio_component* lua_audio = new ga_audio_component(lua, this);
+	_sim->add_entity(lua);
+	return true;
 }
 
 //void ga_audio_manager::make_source(ga_audio_component*)

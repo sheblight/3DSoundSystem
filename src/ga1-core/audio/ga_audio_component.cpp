@@ -20,9 +20,14 @@ ga_audio_component::ga_audio_component(ga_entity* ent, ga_audio_manager* manager
 	sphere->_radius = 1.5f;
 	_shape = sphere;
 
+	// Set up audio
+	_filepath = new char[1024];
+	_filename = new char[1024];
+	strcpy(_filename, "Select a file");
+	_status = "File to be loaded";
+
 	_name = "aduio sarce";
 	_color = ImVec4(0,1,0,1);
-	//_world_position = ga_vec3f::zero_vector();
 	_min_radius = 5;
 	_max_radius = 10;
 
@@ -31,7 +36,9 @@ ga_audio_component::ga_audio_component(ga_entity* ent, ga_audio_manager* manager
 
 ga_audio_component::~ga_audio_component()
 {
-	//delete _shape;
+	delete _shape;
+	delete _filepath;
+	delete _filename;
 	if (_source != NULL) {
 		_source->drop();
 	}
@@ -53,12 +60,12 @@ void ga_audio_component::update(ga_frame_params* params)
 }
 
 
-bool ga_audio_component::play(const char* filepath) 
+bool ga_audio_component::play() 
 {
 	// Check if source can be played
 	if (!_manager->get_engine())
 	{ 
-		std::cout << "Error: Missing engine reference! " << filepath << std::endl;
+		std::cout << "Error: Missing engine reference! " << _filepath << std::endl;
 		return false; 
 	}
 
@@ -66,9 +73,9 @@ bool ga_audio_component::play(const char* filepath)
 	if (_source == NULL || _source->isFinished()) 
 	{
 		printf("Playing at (%f,%f,%f)\n", get_position().x, get_position().y, get_position().z);
-		_source = _manager->get_engine()->play3D(filepath, vec3df(get_position().x, get_position().y, get_position().z), true, false, true);
+		_source = _manager->get_engine()->play3D(_filepath, vec3df(get_position().x, get_position().y, get_position().z), true, false, true);
 		if (!_source) {
-			std::cout << "Error: Couldn't initialize sound source at " << filepath << std::endl;
+			std::cout << "Error: Couldn't initialize sound source at " << _filepath << std::endl;
 			return false;
 		}
 		_source->setMinDistance(_min_radius);
@@ -100,6 +107,11 @@ bool ga_audio_component::stop()
 		return false;
 	}
 	_source->stop();
+	return true;
+}
+
+bool ga_audio_component::load_file(const char* filepath) {
+	strcpy(_filepath, filepath);
 	return true;
 }
 

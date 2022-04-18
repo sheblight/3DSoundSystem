@@ -18,6 +18,11 @@ ga_entity::ga_entity()
 
 ga_entity::~ga_entity()
 {
+	for (auto& c : _components)
+	{
+		delete c;
+	}
+	delete this;
 }
 
 void ga_entity::add_component(ga_component* comp)

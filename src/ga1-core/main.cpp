@@ -55,7 +55,7 @@ int main(int argc, const char** argv)
 	// Create objects for three phases of the frame: input, sim and output.
 	ga_input* input = new ga_input();
 	ga_sim* sim = new ga_sim();
-	ga_audio_manager* audio_manager = new ga_audio_manager;
+	ga_audio_manager* audio_manager = new ga_audio_manager(sim);
 	ga_output* output = new ga_output(input->get_window(), audio_manager);
 
 	// Create the default font:
@@ -72,15 +72,12 @@ int main(int argc, const char** argv)
 	
 
 	// Create an entity whose movement is driven by Lua script.
-	ga_entity lua;
-	lua.translate({ 0.0f, 2.0f, 1.0f });
-	ga_lua_component lua_move(&lua, "data/scripts/move.lua");
-	ga_cube_component lua_model(&lua, "data/textures/rpi.png");
-	ga_audio_component lua_audio(&lua, audio_manager);
-	sim->add_entity(&lua);
-
-	// Init audio
-	//lua_audio.play(sound_file);
+	ga_entity* lua = new ga_entity;
+	lua->translate({ 0.0f, 2.0f, 1.0f });
+	ga_lua_component* lua_move = new ga_lua_component(lua, "data/scripts/move.lua");
+	ga_cube_component* lua_model = new ga_cube_component(lua, "data/textures/rpi.png");
+	ga_audio_component* lua_audio = new ga_audio_component(lua, audio_manager);
+	sim->add_entity(lua);
 
 	// Main loop:
 	while (true)

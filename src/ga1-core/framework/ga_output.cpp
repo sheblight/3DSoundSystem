@@ -43,16 +43,11 @@ ga_output::ga_output(void* win, ga_audio_manager* audio_manager) : _window(win),
 	_default_material = new ga_constant_color_material();
 	_default_material->init();
 
-	_soundfile = new char[1024];
-	_soundfile_displayname = new char[1024];
-	strcpy(_soundfile_displayname, "Select a file");
 }
 
 ga_output::~ga_output()
 {
 	delete _default_material;
-	delete _soundfile;
-	delete _soundfile_displayname;
 }
 
 void ga_output::update(ga_frame_params* params)
@@ -186,7 +181,7 @@ void ga_output::draw_gui() {
 	//ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
 	//ImGui::Checkbox("Another Window", &show_another_window);
 
-	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+	
 	ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
 	// table
@@ -226,12 +221,12 @@ void ga_output::draw_gui() {
 	// Object list view
 	static imgui_addons::ImGuiFileBrowser file_dialog;
 	static int selected = 0;
-	float space = 200;
+	float space = 250;
 
 	// file browser
 	static bool dialog_open = false;
 	{
-		ImGui::BeginChild("Object List", ImVec2(150, space+50), true);
+		ImGui::BeginChild("Object List", ImVec2(150, space+30), true);
 		for (int i = 0; i < components.size(); i++)
 		{
 			if (ImGui::Selectable(components[i]->_name, selected == i, ImGuiSelectableFlags_AllowDoubleClick))
@@ -262,7 +257,7 @@ void ga_output::draw_gui() {
 		ImGui::NewLine();
 		if (ImGui::Button("Play")) 
 		{
-			components[selected]->play(_soundfile);
+			components[selected]->play();
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Pause")) 
@@ -274,13 +269,14 @@ void ga_output::draw_gui() {
 		{
 			components[selected]->stop();
 		}
+		//ImGui::Text(components[selected]->_status);
 		if (ImGui::Button("Browse File")) 
 		{
 			dialog_open = true;
 		}
 		ImGui::SameLine();
-		ImGui::Text(_soundfile_displayname);
-		ImGui::Text("Volume");
+		ImGui::Text(components[selected]->_filename);
+		ImGui::SliderFloat("Volume", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
 		if (ImGui::DragFloat("Min Radius", (float*)&components[selected]->get_min_radius()))
 		{
 			components[selected]->set_min_dist();
@@ -290,7 +286,10 @@ void ga_output::draw_gui() {
 			components[selected]->set_max_dist();
 		}
 		ImGui::EndChild();
-		if (ImGui::Button("New Sound Source")) {}
+		if (ImGui::Button("New Sound Source")) 
+		{
+			_audio_manager->make_source();
+		}
 		ImGui::NewLine();
 		ImGui::EndGroup();
 	}
@@ -306,8 +305,8 @@ void ga_output::draw_gui() {
 	{
 		std::cout << file_dialog.selected_fn << std::endl;      // The name of the selected file or directory in case of Select Directory dialog mode
 		std::cout << file_dialog.selected_path << std::endl;    // The absolute path to the selected file
-		strcpy(_soundfile, file_dialog.selected_path.c_str());
-		strcpy(_soundfile_displayname, file_dialog.selected_fn.c_str());
+		components[selected]->load_file(file_dialog.selected_path.c_str());
+		strcpy(components[selected]->_filename, file_dialog.selected_fn.c_str());
 		dialog_open = false;
 	}
 	else 

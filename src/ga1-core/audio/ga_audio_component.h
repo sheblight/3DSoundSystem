@@ -34,9 +34,10 @@ public:
 	const float& get_min_radius() const { return _min_radius; }
 	const float& get_max_radius() const { return _max_radius; }
 
-	bool play(const char* filepath);
+	bool play();
 	bool pause();
 	bool stop();
+	bool load_file(const char* filepath);
 	
 	void update_sound_position();
 	void set_min_dist();
@@ -47,7 +48,8 @@ public:
 	// GUI properties
 	char* _name;
 	ImVec4 _color;
-	//ga_vec3f _world_position;
+	char* _status;
+	char* _filename;
 
 private:
 	ga_audio_manager* _manager;
@@ -58,7 +60,7 @@ private:
 
 	// GUI properties
 	char* _filepath;
-	char* _filename;
+
 	float _volume;
 	float _min_radius;
 	float _max_radius;
