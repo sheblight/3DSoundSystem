@@ -37,12 +37,13 @@ ga_audio_component::ga_audio_component(ga_entity* ent, ga_audio_manager* manager
 
 ga_audio_component::~ga_audio_component()
 {
+	if (_source != NULL) {
+		_source->stop();
+		_source->drop();
+	}
 	delete _shape;
 	delete _filepath;
 	delete _filename;
-	if (_source != NULL) {
-		_source->drop();
-	}
 }
 
 void ga_audio_component::update(ga_frame_params* params)
@@ -75,7 +76,7 @@ bool ga_audio_component::play()
 	// Load file to sound source
 	if (_source == NULL || _source->isFinished()) 
 	{
-		printf("Playing at (%f,%f,%f)\n", get_position().x, get_position().y, get_position().z);
+		printf("Playing sounds lalala\n");
 		_source = _manager->get_engine()->play3D(_filepath, vec3df(get_position().x, get_position().y, get_position().z), true, false, true);
 		if (!_source) 
 		{
@@ -107,7 +108,7 @@ bool ga_audio_component::pause()
 
 bool ga_audio_component::stop()
 {
-	if (_source == NULL) 
+	if (_source == NULL)
 	{
 		return false;
 	}

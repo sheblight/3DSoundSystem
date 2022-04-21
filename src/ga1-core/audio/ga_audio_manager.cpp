@@ -23,6 +23,10 @@ ga_audio_manager::ga_audio_manager(ga_sim* sim) : _sim(sim) {
 	for (int i = 0; i < deviceList->getDeviceCount(); ++i)
 		printf("%d: %s\n", i, deviceList->getDeviceDescription(i));
 
+
+	// Set up plane
+	_plane = new ga_plane;
+	//_plane.
 }
 
 ga_audio_manager::~ga_audio_manager() {
@@ -48,7 +52,13 @@ bool ga_audio_manager::make_source()
 	return true;
 }
 
-//void ga_audio_manager::make_source(ga_audio_component*)
+void ga_audio_manager::remove(int selected) {
+	ga_audio_component* audio = _components[selected];
+	ga_entity* ent = audio->get_entity();
+	_sim->remove(ent);
+	_components.erase(_components.begin() + selected);
+	delete audio;
+}
 
 irrklang::ISoundEngine* ga_audio_manager::get_engine() {
 	return _engine;

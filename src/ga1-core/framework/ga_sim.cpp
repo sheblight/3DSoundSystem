@@ -31,6 +31,16 @@ void ga_sim::add_entity(ga_entity* ent)
 	_entities.push_back(ent);
 }
 
+void ga_sim::remove(ga_entity* ent) 
+{
+	for (int i = 0; i < _entities.size(); i++) {
+		if (ent == _entities[i]) {
+			_entities.erase(_entities.begin() + i);
+			return;
+		}
+	}
+}
+
 void ga_sim::update(ga_frame_params* params)
 {
 	// Create jobs that update all entities in parallel (one job per entity).

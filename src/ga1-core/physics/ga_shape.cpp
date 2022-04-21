@@ -28,10 +28,40 @@ void ga_plane::get_debug_draw(const ga_mat4f& transform, ga_dynamic_drawcall* dr
 	ga_vec3f vec1 = ga_vec3f_cross(_normal, perp).normal();
 	ga_vec3f vec2 = ga_vec3f_cross(_normal, vec1).normal();
 
-	const float k_plane_size = 10.0f;
+	const float k_plane_size = 20.0f;
 	vec1.scale(k_plane_size);
 	vec2.scale(k_plane_size);
 
+	// New draw
+	int increments = 10;
+	ga_vec3f a = -vec1 - vec2;
+	ga_vec3f b = -vec1 + vec2;
+	ga_vec3f c = vec1 + vec2;
+	ga_vec3f d = vec1 - vec2;
+	
+	for (int i = 0; i <= increments; i++) {
+		ga_vec3f l_a = a + (d - a).scale_result((float)i / increments);
+		ga_vec3f l_b = b + (c - b).scale_result((float)i / increments);
+		ga_vec3f l_c = a + (b - a).scale_result((float)i / increments);
+		ga_vec3f l_d = d + (c - d).scale_result((float)i / increments);
+		drawcall->_positions.push_back(l_a);
+		drawcall->_positions.push_back(l_b);
+		drawcall->_positions.push_back(l_c);
+		drawcall->_positions.push_back(l_d);
+
+		drawcall->_indices.push_back(4*i);
+		drawcall->_indices.push_back(4*i+1);
+		drawcall->_indices.push_back(4*i+2);
+		drawcall->_indices.push_back(4*i+3);
+	}
+	
+	drawcall->_color = { 0.3f, 0.3f, 0.3f };
+	drawcall->_draw_mode = GL_LINES;
+	drawcall->_transform = transform;
+	drawcall->_material = nullptr;
+
+	// Previous debug draw
+	/*
 	drawcall->_positions.push_back(-vec1 - vec2);
 	drawcall->_positions.push_back(-vec1 + vec2);
 	drawcall->_positions.push_back(vec1 + vec2);
@@ -52,6 +82,7 @@ void ga_plane::get_debug_draw(const ga_mat4f& transform, ga_dynamic_drawcall* dr
 	drawcall->_draw_mode = GL_TRIANGLES;
 	drawcall->_transform = transform;
 	drawcall->_material = nullptr;
+	*/
 }
 
 void ga_plane::get_inertia_tensor(ga_mat4f& tensor, float mass)

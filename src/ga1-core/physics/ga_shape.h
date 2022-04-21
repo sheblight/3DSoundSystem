@@ -68,8 +68,8 @@ struct ga_shape
 */
 struct ga_plane final : ga_shape
 {
-	ga_vec3f _point;
-	ga_vec3f _normal;
+	ga_vec3f _point = ga_vec3f::zero_vector();
+	ga_vec3f _normal = ga_vec3f::y_vector();
 
 	ga_shape_t get_type() const override { return k_shape_plane; }
 	void get_debug_draw(const ga_mat4f& transform, struct ga_dynamic_drawcall* drawcall) override;

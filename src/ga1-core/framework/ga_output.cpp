@@ -217,14 +217,13 @@ void ga_output::draw_gui() {
 		ImGui::PopID();
 		if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
 			counter++;
-		ImGui::SameLine();
-		ImGui::Text("counter = %d", counter);
 		ImGui::EndTable();
 	}
 	*/
 	// Object list view
 	static imgui_addons::ImGuiFileBrowser file_dialog;
 	static int selected = 0;
+	bool is_removed = false;
 	float space = 300;
 
 	// file browser
@@ -238,12 +237,16 @@ void ga_output::draw_gui() {
 			{
 				selected = i;
 			}
-				
 		}
 		ImGui::EndChild();
 		if (ImGui::Button("New Sound Source"))
 		{
 			_audio_manager->make_source();
+		}
+		ImGui::SameLine;
+		if (ImGui::Button("Remove"))
+		{
+			is_removed = true;
 		}
 		ImGui::EndGroup();
 	}
@@ -251,6 +254,7 @@ void ga_output::draw_gui() {
 	ImGui::SameLine();
 
 	// Object details
+	if (components.size() > 0) 
 	{
 		ImGui::BeginGroup();
 		ImGui::BeginChild("Object View", ImVec2(0, space), false); // Leave room for 1 line below us
@@ -284,7 +288,7 @@ void ga_output::draw_gui() {
 		ImGui::NewLine();
 		ImGui::Text("Entity");
 		ImGui::Separator();
-		if (ImGui::DragFloat3("Position", (float*)&components[selected]->get_position())) 
+		if (ImGui::DragFloat3("Position", (float*)&components[selected]->get_position()))
 		{
 			components[selected]->update_sound_position();
 		}
@@ -296,12 +300,12 @@ void ga_output::draw_gui() {
 		{
 			components[selected]->set_max_dist();
 		}
-		
+
 		// audio effect parameters
 		ImGui::NewLine();
 		ImGui::Text("Audio FX");
 		ImGui::Separator();
-		if (ImGui::SliderFloat("Volume", (float*)&components[selected]->get_volume(), 0.0f, 1.0f)) 
+		if (ImGui::SliderFloat("Volume", (float*)&components[selected]->get_volume(), 0.0f, 1.0f))
 		{
 			components[selected]->set_volume();
 		}
@@ -314,7 +318,6 @@ void ga_output::draw_gui() {
 
 		ImGui::EndChild();
 		ImGui::EndGroup();
-		
 	}
 	
 	// file dialog part
@@ -322,7 +325,7 @@ void ga_output::draw_gui() {
 	{
 		ImGui::OpenPopup("Open File");
 	}
-	if (file_dialog.showFileDialog("Open File", imgui_addons::ImGuiFileBrowser::DialogMode::OPEN, ImVec2(700, 310), ".wav"))
+	if (file_dialog.showFileDialog("Open File", imgui_addons::ImGuiFileBrowser::DialogMode::OPEN, ImVec2(700, 310), ".wav,.mp3,.ogg"))
 	{
 		std::cout << file_dialog.selected_fn << std::endl;      // The name of the selected file or directory in case of Select Directory dialog mode
 		std::cout << file_dialog.selected_path << std::endl;    // The absolute path to the selected file
@@ -339,5 +342,14 @@ void ga_output::draw_gui() {
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	ImGui::End();
 	
+	if (is_removed) {
+		int to_remove = selected;
+		int next_size = components.size()-1;
+		if (selected >= next_size) {
+			selected = next_size == 0 ? 0 : next_size - 1;
+		}
+		_audio_manager->remove(to_remove);
+		printf("Removed\n");
+	}
 	
 }

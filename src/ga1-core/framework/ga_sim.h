@@ -22,6 +22,7 @@ public:
 	~ga_sim();
 
 	void add_entity(class ga_entity* ent);
+	void remove(ga_entity* ent);
 
 	void update(struct ga_frame_params* params);
 	void late_update(struct ga_frame_params* params);
