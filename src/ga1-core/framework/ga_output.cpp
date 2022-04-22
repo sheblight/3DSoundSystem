@@ -21,6 +21,7 @@
 #include "imgui_impl_opengl3.h"
 
 #include "audio/ga_audio_manager.h"
+#include "audio/ga_audio_listener.h"
 #include "ImGuiFileBrowser.h"
 
 #include <cassert>
@@ -225,6 +226,7 @@ void ga_output::draw_gui() {
 	static int selected = 0;
 	bool is_removed = false;
 	float space = 300;
+	bool is_listener = components[selected]->is_listener();
 
 	// file browser
 	static bool dialog_open = false;
@@ -233,7 +235,7 @@ void ga_output::draw_gui() {
 		ImGui::BeginChild("Object List", ImVec2(150, space), true);
 		for (int i = 0; i < components.size(); i++)
 		{
-			if (ImGui::Selectable(components[i]->_name, selected == i, ImGuiSelectableFlags_AllowDoubleClick))
+			if (ImGui::Selectable(components[i]->_name, selected == i, ImGuiSelectableFlags_AllowDoubleClick | ImGuiSelectableFlags_SpanAllColumns))
 			{
 				selected = i;
 			}
@@ -244,7 +246,17 @@ void ga_output::draw_gui() {
 			_audio_manager->make_source();
 		}
 		ImGui::SameLine;
-		if (ImGui::Button("Remove"))
+
+		// remove sound source
+		
+		if (is_listener) {
+			ImGui::BeginDisabled();
+		}
+		bool remove_button = ImGui::Button("Remove");
+		if (is_listener) {
+			ImGui::EndDisabled();
+		}
+		if (remove_button)			
 		{
 			is_removed = true;
 		}
@@ -259,56 +271,78 @@ void ga_output::draw_gui() {
 		ImGui::BeginGroup();
 		ImGui::BeginChild("Object View", ImVec2(0, space), false); // Leave room for 1 line below us
 
+		
 		// sound playback parameters
-		ImGui::Text("Sound Playback");
-		ImGui::Separator();
-		if (ImGui::Button("Play"))
-		{
-			components[selected]->play();
+		if (!is_listener) {
+			ImGui::Text("Sound Playback");
+			ImGui::Separator();
+			if (ImGui::Button("Play"))
+			{
+				components[selected]->play();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Pause"))
+			{
+				components[selected]->pause();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Stop"))
+			{
+				components[selected]->stop();
+			}
+			//ImGui::Text(components[selected]->_status);
+			if (ImGui::Button("Browse File"))
+			{
+				dialog_open = true;
+			}
+			ImGui::SameLine();
+			ImGui::Text(components[selected]->_filename);
+			ImGui::NewLine();
 		}
-		ImGui::SameLine();
-		if (ImGui::Button("Pause"))
-		{
-			components[selected]->pause();
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Stop"))
-		{
-			components[selected]->stop();
-		}
-		//ImGui::Text(components[selected]->_status);
-		if (ImGui::Button("Browse File"))
-		{
-			dialog_open = true;
-		}
-		ImGui::SameLine();
-		ImGui::Text(components[selected]->_filename);
+		
 
 		// entity parameters
-		ImGui::NewLine();
 		ImGui::Text("Entity");
 		ImGui::Separator();
-		if (ImGui::DragFloat3("Position", (float*)&components[selected]->get_position()))
-		{
-			components[selected]->update_sound_position();
+		if (is_listener) {
+			if (ImGui::DragFloat3("Listener Position", (float*)&components[selected]->get_position()))
+			{
+				components[selected]->update_sound_position();
+			}
 		}
-		if (ImGui::DragFloat("Min Radius", (float*)&components[selected]->get_min_radius()))
-		{
-			components[selected]->set_min_dist();
+		else {
+			if (ImGui::DragFloat3("Position", (float*)&components[selected]->get_position()))
+			{
+				components[selected]->update_sound_position();
+			}
+			if (ImGui::DragFloat("Min Radius", (float*)&components[selected]->get_min_radius()))
+			{
+				components[selected]->set_min_dist();
+			}
+			if (ImGui::DragFloat("Max Radius", (float*)&components[selected]->get_max_radius()))
+			{
+				components[selected]->set_max_dist();
+			}
 		}
-		if (ImGui::DragFloat("Max Radius", (float*)&components[selected]->get_max_radius()))
-		{
-			components[selected]->set_max_dist();
-		}
+		
 
 		// audio effect parameters
 		ImGui::NewLine();
 		ImGui::Text("Audio FX");
 		ImGui::Separator();
-		if (ImGui::SliderFloat("Volume", (float*)&components[selected]->get_volume(), 0.0f, 1.0f))
-		{
-			components[selected]->set_volume();
+		if (is_listener) {
+			if (ImGui::SliderFloat("Master Volume", (float*)&components[selected]->get_volume(), 0.0f, 3.0f))
+			{
+				components[selected]->set_volume();
+			}
 		}
+		else {
+			if (ImGui::SliderFloat("Volume", (float*)&components[selected]->get_volume(), 0.0f, 1.0f))
+			{
+				components[selected]->set_volume();
+			}
+		}
+		
 
 		// misc parameters
 		ImGui::NewLine();

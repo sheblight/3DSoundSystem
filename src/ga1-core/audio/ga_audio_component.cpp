@@ -26,11 +26,13 @@ ga_audio_component::ga_audio_component(ga_entity* ent, ga_audio_manager* manager
 	strcpy(_filename, "Select a file");
 	_status = "File to be loaded";
 
+	_is_listener = false;
 	_name = "aduio sarce";
 	_color = ImVec4(0,1,0,1);
 	_volume = 1;
 	_min_radius = 5;
 	_max_radius = 10;
+
 
 	manager->push_back(this);
 }

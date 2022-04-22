@@ -30,6 +30,7 @@ public:
 
 	virtual void update(struct ga_frame_params* params) override;
 
+	const float& is_listener() const { return _is_listener; }
 	const ga_vec3f& get_position() const { return get_entity()->get_position(); }
 	const float &get_volume() const { return _volume; }
 	const float& get_min_radius() const { return _min_radius; }
@@ -43,7 +44,7 @@ public:
 	void update_sound_position();
 	void set_min_dist();
 	void set_max_dist();
-	void set_volume();
+	virtual void set_volume();
 	bool set_fx(const char* effect, float param);
 
 
@@ -53,17 +54,19 @@ public:
 	char* _status;
 	char* _filename;
 
-private:
+protected:
 	ga_audio_manager* _manager;
 	irrklang::ISoundEngine* _engine;
-	irrklang::ISound* _source;
-
 	struct ga_shape* _shape;
+	bool _is_listener;
+
+	float _volume;
+private:
+	irrklang::ISound* _source;
 
 	// GUI properties
 	char* _filepath;
 
-	float _volume;
 	float _min_radius;
 	float _max_radius;
 };

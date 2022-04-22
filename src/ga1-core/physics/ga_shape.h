@@ -25,6 +25,7 @@ enum ga_shape_t
 	k_shape_oobb,
 	k_shape_convex_hull,
 	k_shape_count,
+	k_shape_crosshair
 };
 
 /*
@@ -61,6 +62,20 @@ struct ga_shape
 	** Returns the vector from the center of mass to the point in space.
 	*/
 	virtual ga_vec3f get_offset_to_point(const ga_mat4f& transform, const ga_vec3f& point) const = 0;
+};
+
+
+/*
+Defines a 3d crosshair with a center point
+*/
+struct ga_crosshair final : ga_shape 
+{
+	ga_vec3f _point = ga_vec3f::zero_vector();
+
+	ga_shape_t get_type() const override { return k_shape_crosshair; }
+	void get_debug_draw(const ga_mat4f& transform, struct ga_dynamic_drawcall* drawcall) override;
+	void get_inertia_tensor(ga_mat4f& tensor, float mass) override;
+	ga_vec3f get_offset_to_point(const ga_mat4f& transform, const ga_vec3f& point) const override;
 };
 
 /*

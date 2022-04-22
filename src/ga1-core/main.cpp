@@ -25,6 +25,7 @@
 #include "gui/ga_font.h"
 
 #include "audio/ga_audio_component.h"
+#include "audio/ga_audio_listener.h"
 #include "audio/ga_audio_manager.h"
 
 
@@ -71,10 +72,13 @@ int main(int argc, const char** argv)
 	rotation.make_axis_angle(ga_vec3f::x_vector(), ga_degrees_to_radians(15.0f));
 	camera->rotate(rotation);
 
+
+	// Create plane
 	ga_entity* plane_ent = new ga_entity;
 	struct ga_shape* plane_shape = new ga_plane;
 	ga_physics_component* plane_physics = new ga_physics_component(plane_ent, plane_shape, 0);
 	sim->add_entity(plane_ent);
+
 
 	// Create an entity whose movement is driven by Lua script.
 	ga_entity* lua = new ga_entity;
@@ -83,6 +87,12 @@ int main(int argc, const char** argv)
 	ga_cube_component* lua_model = new ga_cube_component(lua, "data/textures/rpi.png");
 	ga_audio_component* lua_audio = new ga_audio_component(lua, audio_manager);
 	sim->add_entity(lua);
+
+
+	// Create listener
+	ga_entity* listener = new ga_entity;
+	ga_audio_listener* listener_audio = new ga_audio_listener(listener, audio_manager);
+	sim->add_entity(listener);
 
 	// Main loop:
 	while (true)

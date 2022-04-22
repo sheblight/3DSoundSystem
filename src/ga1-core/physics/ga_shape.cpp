@@ -15,6 +15,37 @@
 #include <vector>
 #include <iostream>
 
+void ga_crosshair::get_debug_draw(const ga_mat4f& transform, struct ga_dynamic_drawcall* drawcall) 
+{
+	drawcall->_positions.push_back(ga_vec3f::x_vector());
+	drawcall->_positions.push_back(-ga_vec3f::x_vector());
+	drawcall->_positions.push_back(ga_vec3f::y_vector());
+	drawcall->_positions.push_back(-ga_vec3f::y_vector());
+	drawcall->_positions.push_back(ga_vec3f::z_vector());
+	drawcall->_positions.push_back(-ga_vec3f::z_vector());
+
+	for (int i = 0; i < 6; i++) {
+		drawcall->_indices.push_back(i);
+	}
+
+	drawcall->_color = { 0.3f, 0.3f, 0.3f };
+	drawcall->_draw_mode = GL_LINES;
+	drawcall->_transform = transform;
+	drawcall->_material = nullptr;
+}
+
+void ga_crosshair::get_inertia_tensor(ga_mat4f& tensor, float mass)
+{
+	// Unimplemented.
+}
+
+ga_vec3f ga_crosshair::get_offset_to_point(const ga_mat4f& transform, const ga_vec3f& point) const
+{
+	// Unimplemented.
+	return ga_vec3f::zero_vector();
+}
+
+
 void ga_plane::get_debug_draw(const ga_mat4f& transform, ga_dynamic_drawcall* drawcall)
 {
 	ga_vec3f position = transform.get_translation() + _point;
@@ -60,29 +91,6 @@ void ga_plane::get_debug_draw(const ga_mat4f& transform, ga_dynamic_drawcall* dr
 	drawcall->_transform = transform;
 	drawcall->_material = nullptr;
 
-	// Previous debug draw
-	/*
-	drawcall->_positions.push_back(-vec1 - vec2);
-	drawcall->_positions.push_back(-vec1 + vec2);
-	drawcall->_positions.push_back(vec1 + vec2);
-	drawcall->_positions.push_back(vec1 - vec2);
-
-	uint32_t indices[] =
-	{
-		0, 2, 1,
-		0, 3, 2,
-	};
-
-	for (int i = 0; i < sizeof(indices) / sizeof(indices[0]); ++i)
-	{
-		drawcall->_indices.push_back(indices[i]);
-	}
-
-	drawcall->_color = { 0.2f, 0.2f, 0.2f };
-	drawcall->_draw_mode = GL_TRIANGLES;
-	drawcall->_transform = transform;
-	drawcall->_material = nullptr;
-	*/
 }
 
 void ga_plane::get_inertia_tensor(ga_mat4f& tensor, float mass)
