@@ -30,12 +30,6 @@ ga_audio_listener::~ga_audio_listener()
 }
 
 void ga_audio_listener::update(struct ga_frame_params* params) {
-	irrklang::vec3df position(get_position().x, get_position().y, get_position().z);        // position of the listener
-	irrklang::vec3df lookDirection(0, 0, 1); // the direction the listener looks into
-	irrklang::vec3df velPerSecond(0, 0, 0);    // only relevant for doppler effects
-	irrklang::vec3df upVector(0, 1, 0);        // where 'up' is in your 3D scene
-	_manager->get_engine()->setListenerPosition(position, lookDirection, velPerSecond, upVector);
-
 	// debug draw
 	ga_mat4f initial_transform;
 	initial_transform.make_identity();
@@ -55,6 +49,14 @@ void ga_audio_listener::update(struct ga_frame_params* params) {
 	params->_dynamic_drawcall_lock.clear(std::memory_order_release);
 
 
+}
+
+void ga_audio_listener::update_sound_position() {
+	irrklang::vec3df position(get_position().x, get_position().y, get_position().z);        // position of the listener
+	irrklang::vec3df lookDirection(0, 0, 1); // the direction the listener looks into
+	irrklang::vec3df velPerSecond(0, 0, 0);    // only relevant for doppler effects
+	irrklang::vec3df upVector(0, 1, 0);        // where 'up' is in your 3D scene
+	_manager->get_engine()->setListenerPosition(position, lookDirection, velPerSecond, upVector);
 }
 
 void ga_audio_listener::set_volume() {

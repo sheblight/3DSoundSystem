@@ -41,11 +41,15 @@ public:
 	bool stop();
 	bool load_file(const char* filepath);
 	
-	void update_sound_position();
+	virtual void update_sound_position();
 	void set_min_dist();
 	void set_max_dist();
 	virtual void set_volume();
-	bool set_fx(const char* effect, float param);
+
+	void enable_reverb1(bool on);
+	void set_reverb1(float gain, float mix, float reverb_time, float hf_reverb_time_ratio);
+	void enable_reverb2(bool on);
+	void set_reverb2();
 
 
 	// GUI properties

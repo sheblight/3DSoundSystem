@@ -1,6 +1,6 @@
-﻿  ga_audio_listener.cpp
+﻿  ga_audio_manager.cpp
   ga_output.cpp
-C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\framework\ga_output.cpp(248,10): warning C4551: function call missing argument list
+C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\framework\ga_output.cpp(310,10): warning C4551: function call missing argument list
   Generating Code...
 C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\audio\ga_audio_component.h(33): warning C4172: returning address of local variable or temporary
   ga.vcxproj -> C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\build\ga1-core-win64\Debug\ga.exe

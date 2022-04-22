@@ -12,5 +12,6 @@ public:
 
 	void update(struct ga_frame_params* params) override;
 
+	void update_sound_position() override;
 	void set_volume() override;
 };

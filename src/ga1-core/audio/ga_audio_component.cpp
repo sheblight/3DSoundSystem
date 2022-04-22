@@ -147,8 +147,3 @@ void ga_audio_component::set_volume()
 	if (_source == NULL) return;
 	_source->setVolume(_volume);
 }
-
-bool ga_audio_component::set_fx(const char* effect, float param)
-{
-	return false;
-}

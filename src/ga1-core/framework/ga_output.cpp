@@ -185,10 +185,8 @@ void ga_output::draw_gui() {
 	style.WindowPadding = ImVec2(13, 13);
 	//style.FramePadding = ImVec2(5,4);
 
-	ImGui::Begin("Audio GUI");                          // Create a window called "Hello, world!" and append into it.
+	ImGui::Begin("Audio GUI");
 	//ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-	//ImGui::Checkbox("Another Window", &show_another_window);
-	
 	// table
 	/*
 	if (ImGui::BeginTable("split", 2, ImGuiTableFlags_BordersOuter)) {
@@ -221,6 +219,70 @@ void ga_output::draw_gui() {
 		ImGui::EndTable();
 	}
 	*/
+
+	// Output device selection
+	std::vector<const char*> o_devices = _audio_manager->get_sound_device_list();
+	static int selected_o_device = 0; // Here we store our selection data as an index.
+	selected_o_device = selected_o_device >= o_devices.size() ? o_devices.size() - 1 : selected_o_device;
+
+	const char* output_preview = o_devices[selected_o_device];  // Pass in the preview value visible before opening the combo (it could be anything)
+	if (ImGui::BeginCombo("Output (wip)", output_preview))
+	{
+		for (int n = 0; n < o_devices.size(); n++)
+		{
+			const bool is_selected = (selected_o_device == n);
+			if (ImGui::Selectable(o_devices[n], is_selected)) 
+			{
+				selected_o_device = n;
+				_audio_manager->set_engine(selected_o_device);
+				components[0]->update_sound_position();
+			}
+			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+
+	// Record device selection
+	std::vector<const char*> r_devices = _audio_manager->get_record_device_list();
+	static int selected_device = 0; // Here we store our selection data as an index.
+	selected_device = selected_device >= r_devices.size() ? r_devices.size()-1 : selected_device;
+	
+	const char* record_preview = r_devices[selected_device];  // Pass in the preview value visible before opening the combo (it could be anything)
+	if (ImGui::BeginCombo("Input (wip)", record_preview))
+	{
+		for (int n = 0; n < r_devices.size(); n++)
+		{
+			const bool is_selected = (selected_device == n);
+			if (ImGui::Selectable(r_devices[n], is_selected))
+			{
+				selected_device = n;
+			}
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::NewLine();
+
+	// Record functionality
+	static bool is_recording = false;
+	if (ImGui::Button("Record")) {
+		is_recording = !is_recording;	
+		if (is_recording) {
+			_audio_manager->start_record(selected_device);
+		}
+		else {
+			_audio_manager->stop_record();
+		}
+	}
+	if (is_recording) {
+		ImGui::SameLine();
+		ImGui::Text("Recording...(wip)");
+	}
+
+
 	// Object list view
 	static imgui_addons::ImGuiFileBrowser file_dialog;
 	static int selected = 0;
@@ -248,7 +310,6 @@ void ga_output::draw_gui() {
 		ImGui::SameLine;
 
 		// remove sound source
-		
 		if (is_listener) {
 			ImGui::BeginDisabled();
 		}

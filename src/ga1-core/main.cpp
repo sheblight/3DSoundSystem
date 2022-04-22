@@ -80,6 +80,12 @@ int main(int argc, const char** argv)
 	sim->add_entity(plane_ent);
 
 
+	// Create listener
+	ga_entity* listener = new ga_entity;
+	ga_audio_listener* listener_audio = new ga_audio_listener(listener, audio_manager);
+	sim->add_entity(listener);
+
+
 	// Create an entity whose movement is driven by Lua script.
 	ga_entity* lua = new ga_entity;
 	//lua->translate({ 0.0f, 2.0f, 1.0f });
@@ -87,12 +93,7 @@ int main(int argc, const char** argv)
 	ga_cube_component* lua_model = new ga_cube_component(lua, "data/textures/rpi.png");
 	ga_audio_component* lua_audio = new ga_audio_component(lua, audio_manager);
 	sim->add_entity(lua);
-
-
-	// Create listener
-	ga_entity* listener = new ga_entity;
-	ga_audio_listener* listener_audio = new ga_audio_listener(listener, audio_manager);
-	sim->add_entity(listener);
+	
 
 	// Main loop:
 	while (true)
