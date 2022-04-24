@@ -35,6 +35,7 @@ public:
 	const float &get_volume() const { return _volume; }
 	const float& get_min_radius() const { return _min_radius; }
 	const float& get_max_radius() const { return _max_radius; }
+	const bool& is_looping() const { return _is_looping; }
 
 	bool play();
 	bool pause();
@@ -45,6 +46,7 @@ public:
 	void set_min_dist();
 	void set_max_dist();
 	virtual void set_volume();
+	void set_loop();
 
 	void enable_reverb1(bool on);
 	void set_reverb1(float gain, float mix, float reverb_time, float hf_reverb_time_ratio);
@@ -73,4 +75,5 @@ private:
 
 	float _min_radius;
 	float _max_radius;
+	bool _is_looping;
 };

@@ -98,6 +98,7 @@ bool ga_audio_component::play()
 	return true;
 }
 
+// Pauses currently playing sound
 bool ga_audio_component::pause()
 {
 	if (_source == NULL)
@@ -108,6 +109,7 @@ bool ga_audio_component::pause()
 	return true;
 }
 
+// Stops currently playing sound
 bool ga_audio_component::stop()
 {
 	if (_source == NULL)
@@ -146,4 +148,10 @@ void ga_audio_component::set_volume()
 {
 	if (_source == NULL) return;
 	_source->setVolume(_volume);
+}
+
+void ga_audio_component::set_loop() 
+{
+	if (_source == NULL) return;
+	_source->setIsLooped(_is_looping);
 }

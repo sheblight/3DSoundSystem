@@ -12,6 +12,11 @@ public:
 
 	void update(struct ga_frame_params* params) override;
 
+	const float& get_rolloff_factor() const { return _rolloff_factor; }
+
 	void update_sound_position() override;
 	void set_volume() override;
+	void set_rolloff();
+private:
+	float _rolloff_factor;
 };

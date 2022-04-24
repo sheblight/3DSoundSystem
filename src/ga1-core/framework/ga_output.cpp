@@ -226,11 +226,12 @@ void ga_output::draw_gui() {
 	selected_o_device = selected_o_device >= o_devices.size() ? o_devices.size() - 1 : selected_o_device;
 
 	const char* output_preview = o_devices[selected_o_device];  // Pass in the preview value visible before opening the combo (it could be anything)
-	if (ImGui::BeginCombo("Output (wip)", output_preview))
+	if (ImGui::BeginCombo("Output", output_preview))
 	{
 		for (int n = 0; n < o_devices.size(); n++)
 		{
 			const bool is_selected = (selected_o_device == n);
+			ImGui::PushID(n);
 			if (ImGui::Selectable(o_devices[n], is_selected)) 
 			{
 				selected_o_device = n;
@@ -240,6 +241,7 @@ void ga_output::draw_gui() {
 			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();
+			ImGui::PopID();
 		}
 		ImGui::EndCombo();
 	}
@@ -250,17 +252,19 @@ void ga_output::draw_gui() {
 	selected_device = selected_device >= r_devices.size() ? r_devices.size()-1 : selected_device;
 	
 	const char* record_preview = r_devices[selected_device];  // Pass in the preview value visible before opening the combo (it could be anything)
-	if (ImGui::BeginCombo("Input (wip)", record_preview))
+	if (ImGui::BeginCombo("Input", record_preview))
 	{
 		for (int n = 0; n < r_devices.size(); n++)
 		{
 			const bool is_selected = (selected_device == n);
+			ImGui::PushID(n);
 			if (ImGui::Selectable(r_devices[n], is_selected))
 			{
 				selected_device = n;
 			}
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();
+			ImGui::PopID();
 		}
 		ImGui::EndCombo();
 	}
@@ -279,7 +283,7 @@ void ga_output::draw_gui() {
 	}
 	if (is_recording) {
 		ImGui::SameLine();
-		ImGui::Text("Recording...(wip)");
+		ImGui::Text("Recording...");
 	}
 
 
@@ -297,7 +301,7 @@ void ga_output::draw_gui() {
 		ImGui::BeginChild("Object List", ImVec2(150, space), true);
 		for (int i = 0; i < components.size(); i++)
 		{
-			if (ImGui::Selectable(components[i]->_name, selected == i, ImGuiSelectableFlags_AllowDoubleClick | ImGuiSelectableFlags_SpanAllColumns))
+			if (ImGui::Selectable(components[i]->_name, selected == i, ImGuiSelectableFlags_SpanAllColumns))
 			{
 				selected = i;
 			}
@@ -307,7 +311,7 @@ void ga_output::draw_gui() {
 		{
 			_audio_manager->make_source();
 		}
-		ImGui::SameLine;
+		ImGui::SameLine();
 
 		// remove sound source
 		if (is_listener) {
@@ -358,6 +362,7 @@ void ga_output::draw_gui() {
 			}
 			ImGui::SameLine();
 			ImGui::Text(components[selected]->_filename);
+			ImGui::Checkbox("Loop", (bool*)&components[selected]->is_looping());
 			ImGui::NewLine();
 		}
 		
@@ -370,19 +375,22 @@ void ga_output::draw_gui() {
 			{
 				components[selected]->update_sound_position();
 			}
+			ga_audio_listener* listener = dynamic_cast<ga_audio_listener*>(components[selected]);
+			if (listener) {
+				if (ImGui::SliderFloat("Rolloff Factor", (float*)&listener->get_rolloff_factor(), 0.f, 10.f))
+				{
+					listener->set_rolloff();
+				}
+			}
 		}
 		else {
-			if (ImGui::DragFloat3("Position", (float*)&components[selected]->get_position()))
+			if (ImGui::SliderFloat3("Position", (float*)&components[selected]->get_position(), -40.f, 40.f))
 			{
 				components[selected]->update_sound_position();
 			}
 			if (ImGui::DragFloat("Min Radius", (float*)&components[selected]->get_min_radius()))
 			{
 				components[selected]->set_min_dist();
-			}
-			if (ImGui::DragFloat("Max Radius", (float*)&components[selected]->get_max_radius()))
-			{
-				components[selected]->set_max_dist();
 			}
 		}
 		

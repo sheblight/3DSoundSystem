@@ -6,10 +6,12 @@
 #include "entity/ga_component.h"
 #include "physics/ga_shape.h"
 #include "audio/ga_audio_component.h"
+#include "ga_audio_receiver.h"
 
 #include <vector>
 
 class ga_audio_component;
+class ga_audio_receiver;
 
 class ga_audio_manager
 {
@@ -27,15 +29,17 @@ public:
 	std::vector<const char*> get_sound_device_list();
 	std::vector<const char*> get_record_device_list();
 
-	void write_wave_file(const char* filename, irrklang::SAudioStreamFormat format, void* data);
+	static void write_wave_file(const char* filename, irrklang::SAudioStreamFormat format, void* data);
 	void start_record(int device_id);
 	void stop_record();
-
+	void start_record_engine();
+	void stop_record_engine();
 
 private:
 	ga_sim* _sim;
 	irrklang::ISoundEngine* _engine;
 	irrklang::IAudioRecorder* _recorder;
+	ga_audio_receiver* _receiver;
 	std::vector<ga_audio_component*> _components;
 
 	// plane

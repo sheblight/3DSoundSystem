@@ -8,7 +8,7 @@
 ga_audio_listener::ga_audio_listener(ga_entity* ent, ga_audio_manager* manager) : ga_audio_component(ent, manager)
 {
 	// parameterize things
-	irrklang::vec3df position(0, 0, 0);        // position of the listener
+	irrklang::vec3df position(get_position().x, get_position().y, get_position().z);        // position of the listener
 	irrklang::vec3df lookDirection(0, 0, 1); // the direction the listener looks into
 	irrklang::vec3df velPerSecond(0, 0, 0);    // only relevant for doppler effects
 	irrklang::vec3df upVector(0, 1, 0);        // where 'up' is in your 3D scene
@@ -21,7 +21,7 @@ ga_audio_listener::ga_audio_listener(ga_entity* ent, ga_audio_manager* manager) 
 	_is_listener = true;
 	_name = "aduio lisssssener";
 	_color = ImVec4(1.f, 0.2f, 0.5f, 1);
-	ent->translate({0, 0.1f, 0});
+	_rolloff_factor = 1;
 }
 
 ga_audio_listener::~ga_audio_listener() 
@@ -61,4 +61,8 @@ void ga_audio_listener::update_sound_position() {
 
 void ga_audio_listener::set_volume() {
 	_manager->get_engine()->setSoundVolume(_volume);
+}
+
+void ga_audio_listener::set_rolloff() {
+	_manager->get_engine()->setRolloffFactor(_rolloff_factor);
 }

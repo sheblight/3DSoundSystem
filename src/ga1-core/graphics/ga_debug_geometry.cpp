@@ -59,6 +59,20 @@ void draw_debug_sphere(float radius, const ga_mat4f& transform, ga_dynamic_drawc
 		drawcall->_indices.push_back((uint16_t)(drawcall->_positions.size() - k_line_segments));
 	}
 
+	// draw crosshair in the center
+	for (int i = 0; i < 6; i++) {
+		drawcall->_indices.push_back(drawcall->_positions.size() + i);
+	}
+
+	drawcall->_positions.push_back(ga_vec3f::x_vector());
+	drawcall->_positions.push_back(-ga_vec3f::x_vector());
+	drawcall->_positions.push_back(ga_vec3f::y_vector());
+	drawcall->_positions.push_back(-ga_vec3f::y_vector());
+	drawcall->_positions.push_back(ga_vec3f::z_vector());
+	drawcall->_positions.push_back(-ga_vec3f::z_vector());
+
+	
+
 	drawcall->_draw_mode = GL_LINES;
 	drawcall->_transform = transform;
 }

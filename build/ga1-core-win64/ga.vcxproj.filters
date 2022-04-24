@@ -160,6 +160,9 @@
     <ClCompile Include="..\..\src\ga1-core\audio\ga_audio_listener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\ga1-core\audio\ga_audio_receiver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\always_copy_data.h">
@@ -205,6 +208,9 @@
       <Filter>Imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\ga1-core\audio\ga_audio_listener.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ga1-core\audio\ga_audio_receiver.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

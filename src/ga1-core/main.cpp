@@ -90,7 +90,7 @@ int main(int argc, const char** argv)
 	ga_entity* lua = new ga_entity;
 	//lua->translate({ 0.0f, 2.0f, 1.0f });
 	ga_lua_component* lua_move = new ga_lua_component(lua, "data/scripts/move.lua");
-	ga_cube_component* lua_model = new ga_cube_component(lua, "data/textures/rpi.png");
+	//ga_cube_component* lua_model = new ga_cube_component(lua, "data/textures/rpi.png");
 	ga_audio_component* lua_audio = new ga_audio_component(lua, audio_manager);
 	sim->add_entity(lua);
 	

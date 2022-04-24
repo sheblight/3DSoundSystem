@@ -1,6 +1,7 @@
 #include "ga_audio_manager.h"
 
 #include "ga_audio_component.h"
+#include "ga_audio_receiver.h"
 #include "framework/ga_sim.h"
 #include "entity/ga_entity.h"
 
@@ -8,13 +9,17 @@ ga_audio_manager::ga_audio_manager(ga_sim* sim) : _sim(sim) {
 	// Initialize engine
 	_engine = NULL;
 	set_engine(0);
+
+	_receiver = new ga_audio_receiver;
 }
 
 ga_audio_manager::~ga_audio_manager() {
 	_engine->drop();
+	delete _receiver;
 }
 
 // Must have zero sound sources running in order to switch devices
+// winMM driver allows output recording (if functional) but messes with 3d sound output
 void ga_audio_manager::set_engine(int selected) {
 	if (_engine != NULL) {
 		_engine->drop();
@@ -22,7 +27,7 @@ void ga_audio_manager::set_engine(int selected) {
 
 	irrklang::ISoundDeviceList* deviceList = irrklang::createSoundDeviceList();
 	printf("Playing from %s\n", deviceList->getDeviceDescription(selected));
-	_engine = irrklang::createIrrKlangDevice(irrklang::ESOD_WIN_MM, irrklang::ESEO_DEFAULT_OPTIONS, deviceList->getDeviceID(selected));
+	_engine = irrklang::createIrrKlangDevice(irrklang::ESOD_AUTO_DETECT, irrklang::ESEO_DEFAULT_OPTIONS, deviceList->getDeviceID(selected));
 	deviceList->drop();
 	if (!_engine)
 	{
@@ -40,8 +45,6 @@ bool ga_audio_manager::make_source()
 {
 	ga_entity* lua = new ga_entity;
 	lua->translate({ 1.0f, -2.0f, 0.0f });
-	//ga_lua_component lua_move(&lua, "data/scripts/move.lua");
-	//ga_cube_component lua_model(&lua, "data/textures/rpi.png");
 	ga_audio_component* lua_audio = new ga_audio_component(lua, this);
 	_sim->add_entity(lua);
 	return true;
@@ -97,6 +100,16 @@ void ga_audio_manager::stop_record() {
 	_recorder->stopRecordingAudio();
 	write_wave_file("recorded.wav", _recorder->getAudioFormat(), _recorder->getRecordedAudioData());
 }
+
+void ga_audio_manager::start_record_engine() {
+	_engine->setMixedDataOutputReceiver(_receiver);
+}
+
+void ga_audio_manager::stop_record_engine() {
+	_engine->setMixedDataOutputReceiver(NULL);
+	_receiver->stop_record();
+}
+
 
 void ga_audio_manager::write_wave_file(const char* filename, irrklang::SAudioStreamFormat format, void* data)
 {

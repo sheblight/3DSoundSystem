@@ -226,6 +226,15 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 :cmErrorLevel
 exit /b %1
 :cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/src/ga1-core/data/sounds/tick.wav C:/Users/bkand/Documents/GitHub/GameArchitecture/3DSoundSystem/build/ga1-core-win64/Debug/data/sounds/tick.wav
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
     </PostBuildEvent>
     <Link>
@@ -785,6 +794,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="..\..\src\ga1-core\audio\ga_audio_component.cpp" />
     <ClCompile Include="..\..\src\ga1-core\audio\ga_audio_listener.cpp" />
     <ClCompile Include="..\..\src\ga1-core\audio\ga_audio_manager.cpp" />
+    <ClCompile Include="..\..\src\ga1-core\audio\ga_audio_receiver.cpp" />
     <ClCompile Include="C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\entity\ga_component.cpp" />
     <ClCompile Include="C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\entity\ga_entity.cpp" />
     <ClCompile Include="C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\entity\ga_hello_component.cpp" />
@@ -840,6 +850,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="..\..\src\ga1-core\audio\ga_audio_component.h" />
     <ClInclude Include="..\..\src\ga1-core\audio\ga_audio_listener.h" />
     <ClInclude Include="..\..\src\ga1-core\audio\ga_audio_manager.h" />
+    <ClInclude Include="..\..\src\ga1-core\audio\ga_audio_receiver.h" />
     <ClInclude Include="C:\Users\bkand\Documents\GitHub\GameArchitecture\3DSoundSystem\src\ga1-core\always_copy_data.h" />
   </ItemGroup>
   <ItemGroup>
