@@ -40,9 +40,9 @@ ga_input::ga_input() : _paused(false)
 		"Game Architecture Engine",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		1280,
-		720,
-		SDL_WINDOW_OPENGL);
+		1480,
+		800,
+		SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 	assert(_window);
 
 	// Request OpenGL 4.4 Context

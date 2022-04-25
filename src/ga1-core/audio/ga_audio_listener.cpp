@@ -19,7 +19,8 @@ ga_audio_listener::ga_audio_listener(ga_entity* ent, ga_audio_manager* manager) 
 	_shape = cross;
 	
 	_is_listener = true;
-	_name = "aduio lisssssener";
+	//_name = "aduio lisssssener";
+	_name = "Audio Listener";
 	_color = ImVec4(1.f, 0.2f, 0.5f, 1);
 	_rolloff_factor = 1;
 }
@@ -30,6 +31,11 @@ ga_audio_listener::~ga_audio_listener()
 }
 
 void ga_audio_listener::update(struct ga_frame_params* params) {
+	// Translate by velocity first
+	float dt = std::chrono::duration_cast<std::chrono::duration<float>>(params->_delta_time).count();
+	ga_vec3f displacement = _velocity.scale_result(dt);
+	get_entity()->translate(displacement);
+
 	// debug draw
 	ga_mat4f initial_transform;
 	initial_transform.make_identity();

@@ -36,6 +36,13 @@ public:
 	const float& get_min_radius() const { return _min_radius; }
 	const float& get_max_radius() const { return _max_radius; }
 	const bool& is_looping() const { return _is_looping; }
+	const ga_vec3f& get_velocity() const { return _velocity; }
+
+	const bool is_fx_available() const { return _source->getSoundEffectControl() != NULL; }
+	const bool& is_reverb1_on() const { return _wave_reverb_enabled; }
+	const bool& is_reverb2_on() const { return _i3dl2_reverb_enabled; }
+	const float* get_reverb1_wave_params() const { return _reverb1_wave_params.data(); }
+	const float* get_reverb2_wave_params() const { return _reverb2_wave_params.data(); }
 
 	bool play();
 	bool pause();
@@ -47,11 +54,12 @@ public:
 	void set_max_dist();
 	virtual void set_volume();
 	void set_loop();
+	void reset_velocity() { _velocity = ga_vec3f::zero_vector(); };
 
-	void enable_reverb1(bool on);
-	void set_reverb1(float gain, float mix, float reverb_time, float hf_reverb_time_ratio);
-	void enable_reverb2(bool on);
-	void set_reverb2();
+	void enable_wave_reverb();
+	void set_wave_reverb();
+	void enable_i3dl2_reverb();
+	void set_i3dl2_reverb();
 
 
 	// GUI properties
@@ -67,6 +75,7 @@ protected:
 	bool _is_listener;
 
 	float _volume;
+	ga_vec3f _velocity;
 private:
 	irrklang::ISound* _source;
 
@@ -76,4 +85,10 @@ private:
 	float _min_radius;
 	float _max_radius;
 	bool _is_looping;
+
+	// Reverb properties
+	bool _wave_reverb_enabled;
+	std::vector<float> _reverb1_wave_params;
+	bool _i3dl2_reverb_enabled;
+	std::vector<float> _reverb2_wave_params;
 };

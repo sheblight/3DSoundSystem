@@ -5,6 +5,8 @@
 #include "framework/ga_sim.h"
 #include "entity/ga_entity.h"
 
+#include <thread>
+
 ga_audio_manager::ga_audio_manager(ga_sim* sim) : _sim(sim) {
 	// Initialize engine
 	_engine = NULL;
@@ -19,15 +21,21 @@ ga_audio_manager::~ga_audio_manager() {
 }
 
 // Must have zero sound sources running in order to switch devices
-// winMM driver allows output recording (if functional) but messes with 3d sound output
+// WinMM driver allows output recording (if functional) but normalizes 3d positioning output
 void ga_audio_manager::set_engine(int selected) {
+	// Uses Direct 8 driver by default on windows
+	irrklang::E_SOUND_OUTPUT_DRIVER driver = irrklang::ESOD_AUTO_DETECT;
+	
+	// Uncomment to use WinMM driver
+	// driver = irrklang::ESOD_WIN_MM;
+
 	if (_engine != NULL) {
 		_engine->drop();
 	}
 
 	irrklang::ISoundDeviceList* deviceList = irrklang::createSoundDeviceList();
 	printf("Playing from %s\n", deviceList->getDeviceDescription(selected));
-	_engine = irrklang::createIrrKlangDevice(irrklang::ESOD_AUTO_DETECT, irrklang::ESEO_DEFAULT_OPTIONS, deviceList->getDeviceID(selected));
+	_engine = irrklang::createIrrKlangDevice(driver, irrklang::ESEO_DEFAULT_OPTIONS, deviceList->getDeviceID(selected));
 	deviceList->drop();
 	if (!_engine)
 	{
@@ -43,10 +51,10 @@ void ga_audio_manager::push_back(ga_audio_component* component)
 
 bool ga_audio_manager::make_source()
 {
-	ga_entity* lua = new ga_entity;
-	lua->translate({ 1.0f, -2.0f, 0.0f });
-	ga_audio_component* lua_audio = new ga_audio_component(lua, this);
-	_sim->add_entity(lua);
+	ga_entity* src = new ga_entity;
+	src->translate({ 1.0f, -2.0f, 0.0f });
+	ga_audio_component* lua_audio = new ga_audio_component(src, this);
+	_sim->add_entity(src);
 	return true;
 }
 
@@ -99,6 +107,8 @@ void ga_audio_manager::start_record(int device_id) {
 void ga_audio_manager::stop_record() {
 	_recorder->stopRecordingAudio();
 	write_wave_file("recorded.wav", _recorder->getAudioFormat(), _recorder->getRecordedAudioData());
+
+
 }
 
 void ga_audio_manager::start_record_engine() {

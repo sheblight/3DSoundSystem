@@ -127,38 +127,38 @@ void ga_output::draw_dynamic(const std::vector<ga_dynamic_drawcall>& drawcalls, 
 
 		GLuint pos;
 		glGenBuffers(1, &pos);
-		glBindBuffer(GL_ARRAY_BUFFER, pos);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(ga_vec3f) * d._positions.size(), &d._positions[0], GL_STREAM_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-		glEnableVertexAttribArray(0);
+glBindBuffer(GL_ARRAY_BUFFER, pos);
+glBufferData(GL_ARRAY_BUFFER, sizeof(ga_vec3f)* d._positions.size(), &d._positions[0], GL_STREAM_DRAW);
+glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+glEnableVertexAttribArray(0);
 
-		GLuint texcoord;
-		if (!d._texcoords.empty())
-		{
-			glGenBuffers(1, &texcoord);
-			glBindBuffer(GL_ARRAY_BUFFER, texcoord);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(ga_vec2f) * d._texcoords.size(), &d._texcoords[0], GL_STREAM_DRAW);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
-			glEnableVertexAttribArray(1);
-		}
+GLuint texcoord;
+if (!d._texcoords.empty())
+{
+	glGenBuffers(1, &texcoord);
+	glBindBuffer(GL_ARRAY_BUFFER, texcoord);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(ga_vec2f) * d._texcoords.size(), &d._texcoords[0], GL_STREAM_DRAW);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(1);
+}
 
-		GLuint indices;
-		glGenBuffers(1, &indices);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint16_t) * d._indices.size(), &d._indices[0], GL_STREAM_DRAW);
+GLuint indices;
+glGenBuffers(1, &indices);
+glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices);
+glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint16_t) * d._indices.size(), &d._indices[0], GL_STREAM_DRAW);
 
-		glDrawElements(d._draw_mode, (GLsizei)d._indices.size(), GL_UNSIGNED_SHORT, 0);
+glDrawElements(d._draw_mode, (GLsizei)d._indices.size(), GL_UNSIGNED_SHORT, 0);
 
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDeleteBuffers(1, &indices);
-		if (!d._texcoords.empty())
-		{
-			glDeleteBuffers(1, &texcoord);
-		}
-		glDeleteBuffers(1, &pos);
-		glDeleteVertexArrays(1, &vao);
-		glBindVertexArray(0);
+glDisableVertexAttribArray(0);
+glDisableVertexAttribArray(1);
+glDeleteBuffers(1, &indices);
+if (!d._texcoords.empty())
+{
+	glDeleteBuffers(1, &texcoord);
+}
+glDeleteBuffers(1, &pos);
+glDeleteVertexArrays(1, &vao);
+glBindVertexArray(0);
 	}
 }
 
@@ -171,8 +171,8 @@ void ga_output::draw_gui() {
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 
-	ImGui::ShowDemoWindow();
-	
+	//ImGui::ShowDemoWindow();
+
 	// window content
 	static float f = 0.0f;
 	static int counter = 0;
@@ -183,49 +183,76 @@ void ga_output::draw_gui() {
 	style.GrabRounding = style.FrameRounding = 2;
 	style.GrabMinSize = 8.0f;
 	style.WindowPadding = ImVec2(13, 13);
-	//style.FramePadding = ImVec2(5,4);
-
-	ImGui::Begin("Audio GUI");
-	//ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-	// table
-	/*
-	if (ImGui::BeginTable("split", 2, ImGuiTableFlags_BordersOuter)) {
-		// Use object uid as identifier. Most commonly you could also use the object pointer as a base ID.
-		ImGui::PushID(0);
-
-		// Text and Tree nodes are less high than framed widgets, using AlignTextToFramePadding() we add vertical spacing to make the tree lines equal high.
-		ImGui::TableNextRow();
-		ImGui::TableSetColumnIndex(0);
-		ImGui::AlignTextToFramePadding();
-		bool node_open = ImGui::TreeNode("Object", "%s_%u", components[0]->_name, 23);
-
-		ImGui::TableSetColumnIndex(1);
-		ImGui::Text("More content to be placed here :P");
-
-		if (node_open)
-		{
-			static float placeholder_members[8] = { 0.0f, 0.0f, 1.0f, 3.1416f, 100.0f, 999.0f };
-			for (int i = 0; i < 8; i++)
-			{
-				ImGui::PushID(i); // Use field index as identifier.
-				ImGui::ColorEdit3("clear color", (float*)&clear_color);
-				ImGui::PopID();
-			}
-			ImGui::TreePop();
-		}
-		ImGui::PopID();
-		if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-			counter++;
-		ImGui::EndTable();
+	
+	// presentation notes
+	static int notes = 0;
+	notes = notes % 6;
+	ImGui::Begin("Notes");
+	ImGui::BeginChild("Notes Content", ImVec2(700, 120), true);
+	if (notes == 0) {
+		ImGui::Text("Initial Proposal:");
+		ImGui::Bullet();
+		ImGui::Text("Develop a basic 3D sound engine with grouping volumes", 10);
+		ImGui::Text("Final Product:");
+		ImGui::Bullet();
+		ImGui::Text("Focused on a standalone engine which explores irrklang features");
 	}
-	*/
+	else if (notes == 1) {
+		ImGui::Text("Object Instantiation");
+		ImGui::Bullet();
+		ImGui::Text("Create any number of sound source instances");
+		ImGui::Bullet();
+		ImGui::Text("Import and playback common file formats like mp3, ogg, wav");
+		ImGui::Bullet();
+		ImGui::Text("Distinguish between sources by assigning colors");
+	}
+	else if (notes == 2) {
+		ImGui::Text("Entity Controls");
+		ImGui::Bullet();
+		ImGui::Text("Position sliders set the source location, velocity sliders smoothly translate the source");
+		ImGui::Bullet();
+		ImGui::Text("Doppler effect activates based on source velocity");
+		ImGui::Bullet();
+		ImGui::Text("Rolloff factor (how quickly the volume fades out of distance) can be modified through the listener object");
+	}
+	else if (notes == 3) {
+		ImGui::Text("Audio Controls");
+		ImGui::Bullet();
+		ImGui::Text("Volume slider... which does the obvious");
+		ImGui::Bullet();
+		ImGui::Text("Implemented two reverb types, one with customizable parameters");
+	}
+	else if (notes == 4) {
+		ImGui::Text("Device Control/Recording");
+		ImGui::Bullet();
+		ImGui::Text("Configure input/output devices at the top (output devices disabled once a sound is played)");
+		ImGui::Bullet();
+		ImGui::Text("Can record directly and export as wav file (and you can import that into the engine)");
+	}
+	else if (notes == 5) {
+		ImGui::Text("Questions/Comments?");
+	}
+	ImGui::EndChild();
+	if (ImGui::ArrowButton("##left", ImGuiDir_Left)) { notes--; }
+	ImGui::SameLine();
+	if (ImGui::ArrowButton("##right", ImGuiDir_Right)) { notes++; }
+	ImGui::End();
+	
+	// audio GUI
+	ImGui::Begin("Audio GUI");
 
 	// Output device selection
 	std::vector<const char*> o_devices = _audio_manager->get_sound_device_list();
 	static int selected_o_device = 0; // Here we store our selection data as an index.
 	selected_o_device = selected_o_device >= o_devices.size() ? o_devices.size() - 1 : selected_o_device;
 
+	//printf("active source: %d\n", _audio_manager->get_engine()->getSoundSourceCount());
 	const char* output_preview = o_devices[selected_o_device];  // Pass in the preview value visible before opening the combo (it could be anything)
+	const bool is_playing = _audio_manager->get_engine()->getSoundSourceCount() > 0;
+	
+	if (is_playing) {
+		ImGui::BeginDisabled();
+	}
 	if (ImGui::BeginCombo("Output", output_preview))
 	{
 		for (int n = 0; n < o_devices.size(); n++)
@@ -244,6 +271,9 @@ void ga_output::draw_gui() {
 			ImGui::PopID();
 		}
 		ImGui::EndCombo();
+	}
+	if (is_playing) {
+		ImGui::EndDisabled();
 	}
 
 	// Record device selection
@@ -272,27 +302,51 @@ void ga_output::draw_gui() {
 
 	// Record functionality
 	static bool is_recording = false;
-	if (ImGui::Button("Record")) {
+	static char* record_status = "";
+	//ImGui::InputText(".wav", save_file, 64);
+	if (ImGui::Button("Record Mic")) {
 		is_recording = !is_recording;	
 		if (is_recording) {
 			_audio_manager->start_record(selected_device);
+			record_status = "Recording...";
 		}
 		else {
 			_audio_manager->stop_record();
+			record_status = "Saved to recorded.wav";
 		}
 	}
-	if (is_recording) {
-		ImGui::SameLine();
-		ImGui::Text("Recording...");
-	}
+	ImGui::SameLine();
+	ImGui::PushID(0);
+	ImGui::Text(record_status);
+	ImGui::PopID();
 
+	// Record engine functionality 
+	// Attempted to implement it but only figured out how to record earsplitting audio
+	/*
+	static bool is_recording_engine = false;
+	if (ImGui::Button("Record Engine")) {
+		is_recording_engine = !is_recording_engine;
+		if (is_recording_engine) {
+			_audio_manager->start_record_engine();
+		}
+		else {
+			_audio_manager->stop_record_engine();
+		}
+	}
+	if (is_recording_engine) {
+		ImGui::SameLine();
+		ImGui::Text("Recording engine...");
+	}
+	*/
 
 	// Object list view
 	static imgui_addons::ImGuiFileBrowser file_dialog;
 	static int selected = 0;
 	bool is_removed = false;
-	float space = 300;
-	bool is_listener = components[selected]->is_listener();
+	float space = 400;
+	ga_audio_component* curr_obj = components[selected];
+	bool is_listener = curr_obj->is_listener();
+	
 
 	// file browser
 	static bool dialog_open = false;
@@ -301,10 +355,12 @@ void ga_output::draw_gui() {
 		ImGui::BeginChild("Object List", ImVec2(150, space), true);
 		for (int i = 0; i < components.size(); i++)
 		{
+			ImGui::PushID(i);
 			if (ImGui::Selectable(components[i]->_name, selected == i, ImGuiSelectableFlags_SpanAllColumns))
 			{
 				selected = i;
 			}
+			ImGui::PopID();
 		}
 		ImGui::EndChild();
 		if (ImGui::Button("New Sound Source"))
@@ -328,7 +384,7 @@ void ga_output::draw_gui() {
 		ImGui::EndGroup();
 	}
 	
-	ImGui::SameLine();
+	ImGui::SameLine(0.f, 1.f);
 
 	// Object details
 	if (components.size() > 0) 
@@ -336,7 +392,6 @@ void ga_output::draw_gui() {
 		ImGui::BeginGroup();
 		ImGui::BeginChild("Object View", ImVec2(0, space), false); // Leave room for 1 line below us
 
-		
 		// sound playback parameters
 		if (!is_listener) {
 			ImGui::Text("Sound Playback");
@@ -355,7 +410,6 @@ void ga_output::draw_gui() {
 			{
 				components[selected]->stop();
 			}
-			//ImGui::Text(components[selected]->_status);
 			if (ImGui::Button("Browse File"))
 			{
 				dialog_open = true;
@@ -381,12 +435,27 @@ void ga_output::draw_gui() {
 				{
 					listener->set_rolloff();
 				}
+				if (ImGui::SliderFloat3("Velocity", (float*)&listener->get_velocity(), -10.f, 10.f))
+				{
+					listener->update_sound_position();
+				}
+				else {
+					listener->reset_velocity();
+				}
 			}
 		}
 		else {
 			if (ImGui::SliderFloat3("Position", (float*)&components[selected]->get_position(), -40.f, 40.f))
 			{
 				components[selected]->update_sound_position();
+			}
+			if (ImGui::SliderFloat3("Velocity", (float*)&curr_obj->get_velocity(), -20.f, 20.f))
+			{
+				curr_obj->update_sound_position();
+			}
+			else 
+			{
+				curr_obj->reset_velocity();
 			}
 			if (ImGui::DragFloat("Min Radius", (float*)&components[selected]->get_min_radius()))
 			{
@@ -409,6 +478,38 @@ void ga_output::draw_gui() {
 			if (ImGui::SliderFloat("Volume", (float*)&components[selected]->get_volume(), 0.0f, 1.0f))
 			{
 				components[selected]->set_volume();
+			}
+
+			// wave reverb
+			if (ImGui::Checkbox("Enable Wave Reverb", (bool*)&curr_obj->is_reverb1_on())) 
+			{
+				curr_obj->enable_wave_reverb();
+			}
+			if (curr_obj->is_reverb1_on()) {
+				if (ImGui::SliderFloat("Gain", (float*)&components[selected]->get_reverb1_wave_params()[0], -96.f, 0)) 
+				{
+					curr_obj->enable_wave_reverb();
+				}
+				if (ImGui::SliderFloat("Reverb Mix", (float*)&components[selected]->get_reverb1_wave_params()[1], -96.f, 0))
+				{
+					curr_obj->enable_wave_reverb();
+				}
+				if (ImGui::SliderFloat("Reverb Time", (float*)&components[selected]->get_reverb1_wave_params()[2], 0.001f, 3000.f))
+				{
+					curr_obj->enable_wave_reverb();
+				}
+				if (ImGui::SliderFloat("HF Reverb Time Ratio", (float*)&components[selected]->get_reverb1_wave_params()[3], 0.001f, 0.999f))
+				{
+					curr_obj->enable_wave_reverb();
+				}
+			}
+
+			if (ImGui::Checkbox("Enable I3DL2 Reverb", (bool*)&curr_obj->is_reverb2_on()))
+			{
+				curr_obj->enable_i3dl2_reverb();
+			}
+			if (curr_obj->is_reverb2_on()) {
+				ImGui::Text("(pretend it shows 12 million parameters here)");
 			}
 		}
 		
@@ -434,6 +535,7 @@ void ga_output::draw_gui() {
 		std::cout << file_dialog.selected_path << std::endl;    // The absolute path to the selected file
 		components[selected]->load_file(file_dialog.selected_path.c_str());
 		strcpy(components[selected]->_filename, file_dialog.selected_fn.c_str());
+		curr_obj->_name = curr_obj->_filename;
 		dialog_open = false;
 	}
 	else 
